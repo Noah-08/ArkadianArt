@@ -11,17 +11,18 @@
    🎛️ CONTROL PANEL
    ========================= */
 :root{
-    /* Toggle visibility */
     --show-button: 0; /* 0 = hidden, 1 = visible */
 
-    /* Desktop position */
+    /* Position (works on ALL devices) */
     --btn-top: 11%;
     --btn-left: 22%;
+
+    /* Size */
     --btn-width: 5%;
     --btn-height: 2%;
 
-    /* Mobile scale multiplier */
-    --mobile-scale: 1;
+    /* Mobile size boost ONLY */
+    --mobile-size-scale: 1.4;
 }
 
 /* ========================= */
@@ -37,18 +38,18 @@ html, body{
 .bg{
     position:fixed;
     inset:0;
-    background:url("Images/2 comm facilit/Screenshot 2026-04-01 at 1.45.49 pm.png") center/cover no-repeat;
+    background:url("Images/2 comm facilit/ComFac.png") center/cover no-repeat;
     filter:blur(20px) brightness(0.7);
     transform:scale(1.1);
     z-index:0;
 }
 
-/* ===== STAGE ===== */
+/* ===== SCROLLABLE STAGE ===== */
 .stage{
     position:relative;
     z-index:1;
     width:100%;
-    min-height:100vh;
+    min-height:100vh; /* allows scrolling */
     display:flex;
     justify-content:center;
 }
@@ -70,8 +71,10 @@ html, body{
 .back-area{
     position:absolute;
 
+    /* 🔥 SAME ON ALL DEVICES */
     top: var(--btn-top);
     left: var(--btn-left);
+
     width: var(--btn-width);
     height: var(--btn-height);
 
@@ -80,10 +83,9 @@ html, body{
     cursor:pointer;
     -webkit-tap-highlight-color: transparent;
 
-    /* Visibility toggle */
     opacity: var(--show-button);
 
-    /* Debug look (only visible when toggled on) */
+    /* Debug style (only visible when enabled) */
     background: rgba(255, 0, 0, 0.3);
     border: 2px solid red;
     color: white;
@@ -95,13 +97,11 @@ html, body{
     font-weight:bold;
 }
 
-/* ===== MOBILE (AUTO-SCALED) ===== */
+/* ===== MOBILE (ONLY SIZE CHANGES) ===== */
 @media (max-width: 768px){
     .back-area{
-        top: calc(var(--btn-top) * var(--mobile-scale));
-        left: calc(var(--btn-left) * 0.95);
-        width: calc(var(--btn-width) * var(--mobile-scale));
-        height: calc(var(--btn-height) * var(--mobile-scale));
+        width: calc(var(--btn-width) * var(--mobile-size-scale));
+        height: calc(var(--btn-height) * var(--mobile-size-scale));
     }
 }
 
@@ -115,7 +115,7 @@ html, body{
 <div class="stage">
 
     <div class="foreground">
-        <img src="Images/2 comm facilit/Screenshot 2026-04-01 at 1.45.49 pm.png" alt="Drawing">
+        <img src="Images/2 comm facilit/ComFac.png" alt="Drawing">
 
         <div class="back-area" onclick="goBack()">BACK</div>
     </div>
