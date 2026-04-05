@@ -11,9 +11,9 @@
    🎛️ CONTROL PANEL
    ========================= */
 :root{
-    --show-button: 1; /* 0 = hidden, 1 = visible */
+    --show-button: 1;
 
-    /* Position (works on ALL devices) */
+    /* Desktop position */
     --btn-top: 11%;
     --btn-left: 22%;
 
@@ -21,8 +21,11 @@
     --btn-width: 5%;
     --btn-height: 2%;
 
-    /* Mobile size boost ONLY */
     --mobile-size-scale: 1.4;
+
+    /* 🔥 iPhone zoom + offset */
+    --mobile-zoom: 1.12;
+    --mobile-top-adjust: -1%; /* moves button UP */
 }
 
 /* ========================= */
@@ -44,12 +47,12 @@ html, body{
     z-index:0;
 }
 
-/* ===== SCROLLABLE STAGE ===== */
+/* ===== STAGE ===== */
 .stage{
     position:relative;
     z-index:1;
     width:100%;
-    min-height:100vh; /* allows scrolling */
+    min-height:100vh;
     display:flex;
     justify-content:center;
 }
@@ -71,7 +74,6 @@ html, body{
 .back-area{
     position:absolute;
 
-    /* 🔥 SAME ON ALL DEVICES */
     top: var(--btn-top);
     left: var(--btn-left);
 
@@ -85,7 +87,6 @@ html, body{
 
     opacity: var(--show-button);
 
-    /* Debug style (only visible when enabled) */
     background: rgba(255, 0, 0, 0.3);
     border: 2px solid red;
     color: white;
@@ -97,9 +98,18 @@ html, body{
     font-weight:bold;
 }
 
-/* ===== MOBILE (ONLY SIZE CHANGES) ===== */
+/* ===== MOBILE (ZOOM + OFFSET) ===== */
 @media (max-width: 768px){
+
+    .foreground{
+        transform: scale(var(--mobile-zoom));
+        transform-origin: top center;
+    }
+
     .back-area{
+        top: calc(var(--btn-top) + var(--mobile-top-adjust));
+        left: var(--btn-left);
+
         width: calc(var(--btn-width) * var(--mobile-size-scale));
         height: calc(var(--btn-height) * var(--mobile-size-scale));
     }
