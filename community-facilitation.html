@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Facilitation</title>
+
+<style>
+
+/* =========================
+   🎛️ CONTROL PANEL
+   ========================= */
+:root{
+    /* Toggle visibility */
+    --show-button: 0; /* 0 = hidden, 1 = visible */
+
+    /* Desktop position */
+    --btn-top: 11%;
+    --btn-left: 22%;
+    --btn-width: 5%;
+    --btn-height: 2%;
+
+    /* Mobile scale multiplier */
+    --mobile-scale: 1.3;
+}
+
+/* ========================= */
+
+html, body{
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:black;
+}
+
+/* ===== BACKGROUND ===== */
+.bg{
+    position:fixed;
+    inset:0;
+    background:url("Images/2 comm facilit/Screenshot 2026-04-01 at 1.45.49 pm.png") center/cover no-repeat;
+    filter:blur(20px) brightness(0.7);
+    transform:scale(1.1);
+    z-index:0;
+}
+
+/* ===== STAGE ===== */
+.stage{
+    position:relative;
+    z-index:1;
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+}
+
+/* ===== IMAGE ===== */
+.foreground{
+    position:relative;
+    width:100%;
+    max-width:900px;
+}
+
+.foreground img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-area{
+    position:absolute;
+
+    top: var(--btn-top);
+    left: var(--btn-left);
+    width: var(--btn-width);
+    height: var(--btn-height);
+
+    z-index:99999;
+
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    /* Visibility toggle */
+    opacity: var(--show-button);
+
+    /* Debug look (only visible when toggled on) */
+    background: rgba(255, 0, 0, 0.3);
+    border: 2px solid red;
+    color: white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* ===== MOBILE (AUTO-SCALED) ===== */
+@media (max-width: 768px){
+    .back-area{
+        top: calc(var(--btn-top) * var(--mobile-scale));
+        left: calc(var(--btn-left) * 0.95);
+        width: calc(var(--btn-width) * var(--mobile-scale));
+        height: calc(var(--btn-height) * var(--mobile-scale));
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="stage">
+
+    <div class="foreground">
+        <img src="Images/2 comm facilit/Screenshot 2026-04-01 at 1.45.49 pm.png" alt="Drawing">
+
+        <div class="back-area" onclick="goBack()">BACK</div>
+    </div>
+
+</div>
+
+<script>
+function goBack(){
+    if (document.referrer && document.referrer !== window.location.href) {
+        window.history.back();
+    } else {
+        window.location.href = "ArkadianArt.html";
+    }
+}
+</script>
+
+</body>
+</html>

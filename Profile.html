@@ -49,7 +49,7 @@ html, body{
     display:block;
 }
 
-/* ===== BACK BUTTON (VISIBLE FOR ALIGNMENT) ===== */
+/* ===== BACK BUTTON (HIDDEN BUT ACTIVE) ===== */
 .back-area{
     position:absolute;
 
@@ -60,22 +60,17 @@ html, body{
 
     z-index:99999;
 
-    /* DEBUG STYLE (visible) */
-    background: rgba(255, 0, 0, 0.3);
-    border: 2px solid red;
-    color: white;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:12px;
-    font-weight:bold;
+    /* 👇 FULLY INVISIBLE BUT CLICKABLE */
+    background: transparent;
+    border: none;
+    color: transparent;
+    opacity: 0;
 
     cursor:pointer;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* ===== iPHONE TWEAK (MATCHED SCALE) ===== */
+/* ===== iPHONE TWEAK ===== */
 @media (max-width: 768px){
     .back-area{
         top: 3.8%;
