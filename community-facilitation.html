@@ -11,20 +11,16 @@
    🎛️ CONTROL PANEL
    ========================= */
 :root{
-    --show-button: 1;
+    --show-button: 0;
 
-    /* Desktop position */
     --btn-top: 11%;
     --btn-left: 22%;
 
-    /* Size */
     --btn-width: 5%;
     --btn-height: 2%;
 
     --mobile-size-scale: 1.4;
-
-    /* 🔥 iPhone adjustment ONLY */
-    --mobile-top-adjust: -2%; /* moved further UP */
+    --mobile-top-adjust: -2%;
 }
 
 /* ========================= */
@@ -56,13 +52,14 @@ html, body{
     justify-content:center;
 }
 
-/* ===== IMAGE ===== */
+/* ===== IMAGE WRAPPER ===== */
 .foreground{
     position:relative;
     width:100%;
     max-width:900px;
 }
 
+/* DESKTOP */
 .foreground img{
     width:100%;
     height:auto;
@@ -97,8 +94,19 @@ html, body{
     font-weight:bold;
 }
 
-/* ===== MOBILE (NO ZOOM, ONLY OFFSET + SIZE) ===== */
+/* ===== MOBILE FIX ===== */
 @media (max-width: 768px){
+
+    .foreground{
+        display:flex;
+        justify-content:center;
+    }
+
+    .foreground img{
+        height: 100dvh;   /* 🔥 fills screen height */
+        width: auto;      /* keeps full image */
+        max-width: none;
+    }
 
     .back-area{
         top: calc(var(--btn-top) + var(--mobile-top-adjust));
