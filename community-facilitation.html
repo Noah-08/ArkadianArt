@@ -23,9 +23,8 @@
 
     --mobile-size-scale: 1.4;
 
-    /* 🔥 iPhone zoom + offset */
-    --mobile-zoom: 1.12;
-    --mobile-top-adjust: -1%; /* moves button UP */
+    /* 🔥 iPhone adjustment ONLY */
+    --mobile-top-adjust: -2%; /* moved further UP */
 }
 
 /* ========================= */
@@ -42,7 +41,7 @@ html, body{
     position:fixed;
     inset:0;
     background:url("Images/2 comm facilit/ComFac.png") center/cover no-repeat;
-    filter:blur(20px) brightness(0.7);
+    filter:blur(20px) brightness(1);
     transform:scale(1.1);
     z-index:0;
 }
@@ -98,13 +97,8 @@ html, body{
     font-weight:bold;
 }
 
-/* ===== MOBILE (ZOOM + OFFSET) ===== */
+/* ===== MOBILE (NO ZOOM, ONLY OFFSET + SIZE) ===== */
 @media (max-width: 768px){
-
-    .foreground{
-        transform: scale(var(--mobile-zoom));
-        transform-origin: top center;
-    }
 
     .back-area{
         top: calc(var(--btn-top) + var(--mobile-top-adjust));
