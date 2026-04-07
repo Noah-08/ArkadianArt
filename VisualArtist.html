@@ -26,16 +26,16 @@ html, body{
     z-index:-1;
 }
 
-/* ===== MAIN CONTAINER (FIXED SCALING SYSTEM) ===== */
+/* ===== MAIN CONTAINER ===== */
 .container{
     width:100%;
     display:flex;
     justify-content:center;
 }
 
-/* ===== RESPONSIVE DESIGN FRAME ===== */
+/* ===== RESPONSIVE FRAME ===== */
 .scale-wrapper{
-    width: min(1000px, 100vw);  /* 🔥 key fix */
+    width: min(1000px, 100vw);
 }
 
 /* ===== IMAGE WRAPPER ===== */
@@ -44,14 +44,59 @@ html, body{
     width:100%;
 }
 
-/* IMAGE */
 .main-image{
     width:100%;
     display:block;
 }
 
 /* =========================
-   POSITION SYSTEM (UNCHANGED LOGIC)
+   🎛️ BUTTON LINK CONTROL PANEL
+========================= */
+
+/* 🔥 EDIT ALL YOUR LINKS HERE */
+:root{
+    --link-1: "Drawing.html";
+    --link-2: "Painting.html";
+    --link-3: "Sculpture.html";
+    --link-4: "Design.html";
+    --link-5: "Photography.html";
+    --link-6: "Stained-Glass.html";
+    --link-7: "Mosaic.html";
+    --link-8: "Ephemera.html";
+    --link-9: "Mixed-Media.html";
+    --link-10: "Illustration.html";
+    --link-11: "";
+    --link-12: "";
+    --link-13: "";
+    --link-14: "";
+    --link-15: "";
+    --link-16: "";
+    --link-17: "";
+    --link-18: "";
+    --link-19: "";
+    --link-20: "";
+    --link-21: "";
+    --link-22: "";
+    --link-23: "";
+    --link-24: "";
+    --link-25: "";
+    --link-26: "";
+    --link-27: "";
+    --link-28: "";
+    --link-29: "";
+    --link-30: "";
+    --link-31: "";
+    --link-32: "";
+    --link-33: "";
+    --link-34: "";
+    --link-35: "";
+    --link-36: "";
+    --link-37: "";
+    --link-38: "";
+}
+
+/* =========================
+   POSITION SYSTEM (UNCHANGED)
 ========================= */
 
 :root{
@@ -92,24 +137,20 @@ html, body{
     height:2.8%;
 }
 
-/* ===== BACK BUTTON (NOW PROPERLY SCALED) ===== */
+/* BACK BUTTON */
 .back-btn{
     position:absolute;
-
     top: var(--back-top);
     left: var(--back-left);
     width: var(--back-width);
     height: var(--back-height);
-
     z-index:999;
-
-    /* hidden but active */
     background: transparent;
     border: none;
     opacity: 0;
 }
 
-/* ===== COLUMNS ===== */
+/* COLUMNS */
 .btn-left{
     left:var(--left-col);
     width:16%;
@@ -120,45 +161,26 @@ html, body{
     width:16%;
 }
 
-/* ===== ROWS ===== */
-.btn-1  { top:var(--row-1); }
-.btn-2  { top:var(--row-1); }
-.btn-3  { top:var(--row-2); }
-.btn-4  { top:var(--row-2); }
-.btn-5  { top:var(--row-3); }
-.btn-6  { top:var(--row-3); }
-.btn-7  { top:var(--row-4); }
-.btn-8  { top:var(--row-4); }
-.btn-9  { top:var(--row-5); }
-.btn-10 { top:var(--row-5); }
-.btn-11 { top:var(--row-6); }
-.btn-12 { top:var(--row-6); }
-.btn-13 { top:var(--row-7); }
-.btn-14 { top:var(--row-7); }
-.btn-15 { top:var(--row-8); }
-.btn-16 { top:var(--row-8); }
-.btn-17 { top:var(--row-9); }
-.btn-18 { top:var(--row-9); }
-.btn-19 { top:var(--row-10); }
-.btn-20 { top:var(--row-10); }
-.btn-21 { top:var(--row-11); }
-.btn-22 { top:var(--row-11); }
-.btn-23 { top:var(--row-12); }
-.btn-24 { top:var(--row-12); }
-.btn-25 { top:var(--row-13); }
-.btn-26 { top:var(--row-13); }
-.btn-27 { top:var(--row-14); }
-.btn-28 { top:var(--row-14); }
-.btn-29 { top:var(--row-15); }
-.btn-30 { top:var(--row-15); }
-.btn-31 { top:var(--row-16); }
-.btn-32 { top:var(--row-16); }
-.btn-33 { top:var(--row-17); }
-.btn-34 { top:var(--row-17); }
-.btn-35 { top:var(--row-18); }
-.btn-36 { top:var(--row-18); }
-.btn-37 { top:var(--row-19); }
-.btn-38 { top:var(--row-19); }
+/* ROWS */
+.btn-1,.btn-2   { top:var(--row-1); }
+.btn-3,.btn-4   { top:var(--row-2); }
+.btn-5,.btn-6   { top:var(--row-3); }
+.btn-7,.btn-8   { top:var(--row-4); }
+.btn-9,.btn-10  { top:var(--row-5); }
+.btn-11,.btn-12 { top:var(--row-6); }
+.btn-13,.btn-14 { top:var(--row-7); }
+.btn-15,.btn-16 { top:var(--row-8); }
+.btn-17,.btn-18 { top:var(--row-9); }
+.btn-19,.btn-20 { top:var(--row-10); }
+.btn-21,.btn-22 { top:var(--row-11); }
+.btn-23,.btn-24 { top:var(--row-12); }
+.btn-25,.btn-26 { top:var(--row-13); }
+.btn-27,.btn-28 { top:var(--row-14); }
+.btn-29,.btn-30 { top:var(--row-15); }
+.btn-31,.btn-32 { top:var(--row-16); }
+.btn-33,.btn-34 { top:var(--row-17); }
+.btn-35,.btn-36 { top:var(--row-18); }
+.btn-37,.btn-38 { top:var(--row-19); }
 
 </style>
 </head>
@@ -168,26 +190,40 @@ html, body{
 <div class="bg-blur"></div>
 
 <div class="container">
-
     <div class="scale-wrapper">
-
         <div class="image-wrapper">
 
             <img class="main-image" src="Images/1 visual artist/VisualArtLanding.jpg">
 
-            <!-- BACK BUTTON -->
+            <!-- BACK -->
             <a class="back-btn" href="ArkadianArt.html"></a>
 
-            <!-- LEFT -->
-            <a class="hitbox btn-left btn-1" href="Drawing.html"></a>
+            <!-- 🔥 ALL 38 BUTTONS -->
+            <script>
+                const wrapper = document.currentScript.parentElement;
 
-            <!-- RIGHT -->
-            <a class="hitbox btn-right btn-2" href="#"></a>
+                for(let i = 1; i <= 38; i++){
+                    const a = document.createElement("a");
+
+                    a.className = `hitbox btn-${i} ${i % 2 === 1 ? "btn-left" : "btn-right"}`;
+
+                    // pull link from CSS variable
+                    const style = getComputedStyle(document.documentElement);
+                    let link = style.getPropertyValue(`--link-${i}`).trim();
+
+                    // clean quotes
+                    link = link.replace(/^["']|["']$/g, "");
+
+                    if(link){
+                        a.href = link;
+                    }
+
+                    wrapper.appendChild(a);
+                }
+            </script>
 
         </div>
-
     </div>
-
 </div>
 
 </body>
