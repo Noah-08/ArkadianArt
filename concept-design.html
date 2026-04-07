@@ -21,14 +21,14 @@
     --btn-width: 5%;
     --btn-height: 2%;
 
-    /* 📱 MOBILE TOGGLE */
-    --use-mobile-position: 0;
-
-    /* 📱 MOBILE POSITION (tweak these on iPhone) */
-    --mobile-left: 2%;
-    --mobile-top: 22%;
+    /* 📱 MOBILE POSITION */
+    --mobile-left: 15%;
+    --mobile-top: 2%;
 
     --mobile-size-scale: 1.4;
+
+    /* 🔥 PREVIEW SETTINGS */
+    --preview-scale: 0.5;
 }
 
 /* ========================= */
@@ -36,11 +36,15 @@
 html, body{
     margin:0;
     padding:0;
-    font-family:Arial, Helvetica, sans-serif;
     background:black;
+    font-family:Arial, Helvetica, sans-serif;
+
+    /* ✅ ALLOW SCROLL */
+    min-height:100%;
+    overflow-y:auto;
 }
 
-/* ===== BACKGROUND ===== */
+/* ===== BACKGROUND (fixed so it doesn't scroll weird) ===== */
 .bg{
     position:fixed;
     inset:0;
@@ -50,31 +54,50 @@ html, body{
     z-index:0;
 }
 
+/* ===== WRAPPER ===== */
+.wrapper{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    position:relative;
+    z-index:1;
+}
+
+/* ===== iPHONE PREVIEW MODE ===== */
+.wrapper.mobile .stage{
+    width:390px;
+    height:auto;
+
+    transform: scale(var(--preview-scale));
+    transform-origin: top center;
+}
+
 /* ===== STAGE ===== */
 .stage{
     position:relative;
-    z-index:1;
     width:100%;
     min-height:100vh;
     display:flex;
     justify-content:center;
 }
 
-/* ===== IMAGE WRAPPER ===== */
+/* ===== IMAGE ===== */
 .foreground{
     position:relative;
     width:100%;
     max-width:900px;
 }
 
-/* DESKTOP IMAGE */
 .foreground img{
     width:100%;
     height:auto;
     display:block;
 }
 
-/* ===== BACK BUTTON ===== */
+/* ===== BUTTON ===== */
 .back-area{
     position:absolute;
 
@@ -86,11 +109,9 @@ html, body{
 
     z-index:99999;
     cursor:pointer;
-    -webkit-tap-highlight-color: transparent;
 
     opacity: var(--show-button);
 
-    /* DEBUG STYLE */
     background: rgba(255, 0, 0, 0.3);
     border: 2px solid red;
     color: white;
@@ -102,36 +123,13 @@ html, body{
     font-weight:bold;
 }
 
-/* ===== MOBILE FIX ===== */
-@media (max-width: 768px){
+/* ===== MOBILE MODE ===== */
+.wrapper.mobile .back-area{
+    top: var(--mobile-top);
+    left: var(--mobile-left);
 
-    .foreground{
-        display:flex;
-        justify-content:center;
-    }
-
-    .foreground img{
-        height: 100dvh;
-        width: auto;
-        max-width: none;
-    }
-
-    .back-area{
-
-        /* 🔥 Toggle between desktop & mobile positioning */
-        top: calc(
-            var(--btn-top) * (1 - var(--use-mobile-position)) +
-            var(--mobile-top) * var(--use-mobile-position)
-        );
-
-        left: calc(
-            var(--btn-left) * (1 - var(--use-mobile-position)) +
-            var(--mobile-left) * var(--use-mobile-position)
-        );
-
-        width: calc(var(--btn-width) * var(--mobile-size-scale));
-        height: calc(var(--btn-height) * var(--mobile-size-scale));
-    }
+    width: calc(var(--btn-width) * var(--mobile-size-scale));
+    height: calc(var(--btn-height) * var(--mobile-size-scale));
 }
 
 </style>
@@ -139,14 +137,16 @@ html, body{
 
 <body>
 
-<div class="bg"></div>
+<div class="wrapper" id="wrapper">
 
-<div class="stage">
+    <div class="bg"></div>
 
-    <div class="foreground">
-        <img src="Images/3 concept design/ConceptDesign.png" alt="Drawing">
+    <div class="stage">
+        <div class="foreground">
+            <img src="Images/3 concept design/ConceptDesign.png" alt="Drawing">
 
-        <div class="back-area" onclick="goBack()">BACK</div>
+            <div class="back-area" onclick="goBack()">BACK</div>
+        </div>
     </div>
 
 </div>
@@ -158,6 +158,19 @@ function goBack(){
     } else {
         window.location.href = "ArkadianArt.html";
     }
+}
+
+/* =========================
+   🔥 TOGGLE HERE
+   ========================= */
+const ENABLE_IPHONE_PREVIEW = false;
+
+const wrapper = document.getElementById("wrapper");
+
+if(ENABLE_IPHONE_PREVIEW){
+    wrapper.classList.add("mobile");
+}else{
+    wrapper.classList.remove("mobile");
 }
 </script>
 
