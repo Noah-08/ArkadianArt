@@ -13,14 +13,22 @@
 :root{
     --show-button: 1;
 
+    /* DESKTOP position */
     --btn-top: 5%;
     --btn-left: 22%;
 
+    /* SIZE */
     --btn-width: 5%;
     --btn-height: 2%;
 
+    /* 📱 MOBILE TOGGLE */
+    --use-mobile-position: 0;
+
+    /* 📱 MOBILE POSITION (tweak these on iPhone) */
+    --mobile-top: 6%;
+    --mobile-left: 22%;
+
     --mobile-size-scale: 1.4;
-    --mobile-top-adjust: -2%;
 }
 
 /* ========================= */
@@ -59,7 +67,7 @@ html, body{
     max-width:900px;
 }
 
-/* DESKTOP */
+/* DESKTOP IMAGE */
 .foreground img{
     width:100%;
     height:auto;
@@ -77,12 +85,12 @@ html, body{
     height: var(--btn-height);
 
     z-index:99999;
-
     cursor:pointer;
     -webkit-tap-highlight-color: transparent;
 
     opacity: var(--show-button);
 
+    /* DEBUG STYLE */
     background: rgba(255, 0, 0, 0.3);
     border: 2px solid red;
     color: white;
@@ -103,14 +111,23 @@ html, body{
     }
 
     .foreground img{
-        height: 100dvh;   /* 🔥 fills screen height */
-        width: auto;      /* keeps full image */
+        height: 100dvh;
+        width: auto;
         max-width: none;
     }
 
     .back-area{
-        top: calc(var(--btn-top) + var(--mobile-top-adjust));
-        left: var(--btn-left);
+
+        /* 🔥 Toggle between desktop & mobile positioning */
+        top: calc(
+            var(--btn-top) * (1 - var(--use-mobile-position)) +
+            var(--mobile-top) * var(--use-mobile-position)
+        );
+
+        left: calc(
+            var(--btn-left) * (1 - var(--use-mobile-position)) +
+            var(--mobile-left) * var(--use-mobile-position)
+        );
 
         width: calc(var(--btn-width) * var(--mobile-size-scale));
         height: calc(var(--btn-height) * var(--mobile-size-scale));
