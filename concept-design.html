@@ -13,22 +13,23 @@
 :root{
     --show-button: 1;
 
-    /* DESKTOP position */
+    /* =========================
+       DESKTOP POSITION
+    ========================= */
     --btn-top: 5%;
     --btn-left: 22%;
-
-    /* SIZE */
     --btn-width: 5%;
     --btn-height: 2%;
 
-    /* 📱 MOBILE TOGGLE */
-    --use-mobile-position: 0;
+    /* =========================
+       📱 MOBILE CONTROL
+       ========================= */
+    --mobile-mode: 0; /* 0 = desktop, 1 = mobile */
 
-    /* 📱 MOBILE POSITION (tweak these on iPhone) */
-    --mobile-left: 2%;
     --mobile-top: 22%;
-
-    --mobile-size-scale: 1.4;
+    --mobile-left: 2%;
+    --mobile-width: 8%;
+    --mobile-height: 4%;
 }
 
 /* ========================= */
@@ -67,7 +68,7 @@ html, body{
     max-width:900px;
 }
 
-/* DESKTOP IMAGE */
+/* IMAGE */
 .foreground img{
     width:100%;
     height:auto;
@@ -78,11 +79,11 @@ html, body{
 .back-area{
     position:absolute;
 
-    top: var(--btn-top);
-    left: var(--btn-left);
-
-    width: var(--btn-width);
-    height: var(--btn-height);
+    /* 🔥 MOBILE/DESKTOP SWITCH */
+    top: calc(var(--btn-top) * (1 - var(--mobile-mode)) + var(--mobile-top) * var(--mobile-mode));
+    left: calc(var(--btn-left) * (1 - var(--mobile-mode)) + var(--mobile-left) * var(--mobile-mode));
+    width: calc(var(--btn-width) * (1 - var(--mobile-mode)) + var(--mobile-width) * var(--mobile-mode));
+    height: calc(var(--btn-height) * (1 - var(--mobile-mode)) + var(--mobile-height) * var(--mobile-mode));
 
     z-index:99999;
     cursor:pointer;
@@ -90,19 +91,19 @@ html, body{
 
     opacity: var(--show-button);
 
-    /* DEBUG STYLE */
+    /* DEBUG STYLE (remove when done) */
     background: rgba(255, 0, 0, 0.3);
     border: 2px solid red;
-    color: white;
 
     display:flex;
     align-items:center;
     justify-content:center;
     font-size:12px;
     font-weight:bold;
+    color:white;
 }
 
-/* ===== MOBILE FIX ===== */
+/* ===== MOBILE IMAGE BEHAVIOUR (optional but stable) ===== */
 @media (max-width: 768px){
 
     .foreground{
@@ -111,26 +112,9 @@ html, body{
     }
 
     .foreground img{
-        height: 100dvh;
-        width: auto;
-        max-width: none;
-    }
-
-    .back-area{
-
-        /* 🔥 Toggle between desktop & mobile positioning */
-        top: calc(
-            var(--btn-top) * (1 - var(--use-mobile-position)) +
-            var(--mobile-top) * var(--use-mobile-position)
-        );
-
-        left: calc(
-            var(--btn-left) * (1 - var(--use-mobile-position)) +
-            var(--mobile-left) * var(--use-mobile-position)
-        );
-
-        width: calc(var(--btn-width) * var(--mobile-size-scale));
-        height: calc(var(--btn-height) * var(--mobile-size-scale));
+        height:100dvh;
+        width:auto;
+        max-width:none;
     }
 }
 
@@ -144,7 +128,7 @@ html, body{
 <div class="stage">
 
     <div class="foreground">
-        <img src="Images/3 concept design/ConceptDesign.png" alt="Drawing">
+        <img src="Images/3 concept design/ConceptDesign.png" alt="Concept Design">
 
         <div class="back-area" onclick="goBack()">BACK</div>
     </div>
