@@ -13,23 +13,11 @@
 :root{
     --show-button: 1;
 
-    /* =========================
-       DESKTOP POSITION
-    ========================= */
+    /* ONE SYSTEM FOR ALL DEVICES ✅ */
     --btn-top: 5%;
     --btn-left: 22%;
     --btn-width: 5%;
     --btn-height: 2%;
-
-    /* =========================
-       📱 MOBILE CONTROL
-       ========================= */
-    --mobile-mode: 0; /* 0 = desktop, 1 = mobile */
-
-    --mobile-top: 18%;
-    --mobile-left: -5%;
-    --mobile-width: 8%;
-    --mobile-height: 4%;
 }
 
 /* ========================= */
@@ -59,6 +47,7 @@ html, body{
     min-height:100vh;
     display:flex;
     justify-content:center;
+    align-items:center; /* keeps it centered nicely */
 }
 
 /* ===== IMAGE WRAPPER ===== */
@@ -68,7 +57,7 @@ html, body{
     max-width:900px;
 }
 
-/* IMAGE */
+/* 🔥 CRITICAL: SAME SCALING EVERYWHERE */
 .foreground img{
     width:100%;
     height:auto;
@@ -79,11 +68,10 @@ html, body{
 .back-area{
     position:absolute;
 
-    /* 🔥 MOBILE/DESKTOP SWITCH */
-    top: calc(var(--btn-top) * (1 - var(--mobile-mode)) + var(--mobile-top) * var(--mobile-mode));
-    left: calc(var(--btn-left) * (1 - var(--mobile-mode)) + var(--mobile-left) * var(--mobile-mode));
-    width: calc(var(--btn-width) * (1 - var(--mobile-mode)) + var(--mobile-width) * var(--mobile-mode));
-    height: calc(var(--btn-height) * (1 - var(--mobile-mode)) + var(--mobile-height) * var(--mobile-mode));
+    top: var(--btn-top);
+    left: var(--btn-left);
+    width: var(--btn-width);
+    height: var(--btn-height);
 
     z-index:99999;
     cursor:pointer;
@@ -91,7 +79,7 @@ html, body{
 
     opacity: var(--show-button);
 
-    /* DEBUG STYLE (remove when done) */
+    /* DEBUG */
     background: rgba(255, 0, 0, 0.3);
     border: 2px solid red;
 
@@ -103,18 +91,10 @@ html, body{
     color:white;
 }
 
-/* ===== MOBILE IMAGE BEHAVIOUR (optional but stable) ===== */
+/* ❌ REMOVE mobile overrides that break scaling */
 @media (max-width: 768px){
-
     .foreground{
-        display:flex;
-        justify-content:center;
-    }
-
-    .foreground img{
-        height:100dvh;
-        width:auto;
-        max-width:none;
+        width:100%;
     }
 }
 

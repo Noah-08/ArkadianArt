@@ -13,19 +13,11 @@
 :root{
     --show-button: 1;
 
-    /* ===== DESKTOP ===== */
+    /* ONE SYSTEM FOR ALL DEVICES ✅ */
     --btn-top: 11%;
     --btn-left: 22%;
     --btn-width: 5%;
     --btn-height: 2%;
-
-    /* ===== 📱 MOBILE CONTROL ===== */
-    --mobile-mode: 0; /* 0 = desktop, 1 = mobile */
-
-    --mobile-top: 5%;
-    --mobile-left: 15%;
-    --mobile-width: 7%;
-    --mobile-height: 3%;
 }
 
 /* ========================= */
@@ -55,6 +47,7 @@ html, body{
     min-height:100vh;
     display:flex;
     justify-content:center;
+    align-items:center; /* keeps layout nice */
 }
 
 /* ===== IMAGE WRAPPER ===== */
@@ -64,7 +57,7 @@ html, body{
     max-width:900px;
 }
 
-/* DESKTOP IMAGE */
+/* 🔥 CRITICAL: consistent scaling */
 .foreground img{
     width:100%;
     height:auto;
@@ -75,11 +68,10 @@ html, body{
 .back-area{
     position:absolute;
 
-    /* 🔥 FULL CONTROL SWITCH */
-    top: calc(var(--btn-top) * (1 - var(--mobile-mode)) + var(--mobile-top) * var(--mobile-mode));
-    left: calc(var(--btn-left) * (1 - var(--mobile-mode)) + var(--mobile-left) * var(--mobile-mode));
-    width: calc(var(--btn-width) * (1 - var(--mobile-mode)) + var(--mobile-width) * var(--mobile-mode));
-    height: calc(var(--btn-height) * (1 - var(--mobile-mode)) + var(--mobile-height) * var(--mobile-mode));
+    top: var(--btn-top);
+    left: var(--btn-left);
+    width: var(--btn-width);
+    height: var(--btn-height);
 
     z-index:99999;
 
@@ -100,18 +92,10 @@ html, body{
     font-weight:bold;
 }
 
-/* ===== MOBILE IMAGE FIX ===== */
+/* ❌ REMOVE height-based mobile scaling */
 @media (max-width: 768px){
-
     .foreground{
-        display:flex;
-        justify-content:center;
-    }
-
-    .foreground img{
-        height:100dvh;
-        width:auto;
-        max-width:none;
+        width:100%;
     }
 }
 
@@ -125,7 +109,7 @@ html, body{
 <div class="stage">
 
     <div class="foreground">
-        <img src="Images/6 interp design/Interp.png" alt="Drawing">
+        <img src="Images/6 interp design/Interp.png" alt="Interpretive Design">
 
         <div class="back-area" onclick="goBack()">BACK</div>
     </div>
