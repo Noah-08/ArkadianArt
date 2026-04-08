@@ -13,14 +13,19 @@
 :root{
     --show-button: 1;
 
+    /* ===== DESKTOP ===== */
     --btn-top: 11%;
     --btn-left: 22%;
-
     --btn-width: 5%;
     --btn-height: 2%;
 
-    --mobile-size-scale: 1.4;
-    --mobile-top-adjust: -2%;
+    /* ===== 📱 MOBILE CONTROL ===== */
+    --mobile-mode: 0; /* 0 = desktop, 1 = mobile */
+
+    --mobile-top: 9%;
+    --mobile-left: 19%;
+    --mobile-width: 7%;
+    --mobile-height: 3%;
 }
 
 /* ========================= */
@@ -59,7 +64,7 @@ html, body{
     max-width:900px;
 }
 
-/* DESKTOP */
+/* DESKTOP IMAGE */
 .foreground img{
     width:100%;
     height:auto;
@@ -70,11 +75,11 @@ html, body{
 .back-area{
     position:absolute;
 
-    top: var(--btn-top);
-    left: var(--btn-left);
-
-    width: var(--btn-width);
-    height: var(--btn-height);
+    /* 🔥 FULL CONTROL SWITCH */
+    top: calc(var(--btn-top) * (1 - var(--mobile-mode)) + var(--mobile-top) * var(--mobile-mode));
+    left: calc(var(--btn-left) * (1 - var(--mobile-mode)) + var(--mobile-left) * var(--mobile-mode));
+    width: calc(var(--btn-width) * (1 - var(--mobile-mode)) + var(--mobile-width) * var(--mobile-mode));
+    height: calc(var(--btn-height) * (1 - var(--mobile-mode)) + var(--mobile-height) * var(--mobile-mode));
 
     z-index:99999;
 
@@ -83,6 +88,7 @@ html, body{
 
     opacity: var(--show-button);
 
+    /* DEBUG */
     background: rgba(255, 0, 0, 0.3);
     border: 2px solid red;
     color: white;
@@ -94,7 +100,7 @@ html, body{
     font-weight:bold;
 }
 
-/* ===== MOBILE FIX ===== */
+/* ===== MOBILE IMAGE FIX ===== */
 @media (max-width: 768px){
 
     .foreground{
@@ -103,17 +109,9 @@ html, body{
     }
 
     .foreground img{
-        height: 100dvh;   /* 🔥 fills screen height */
-        width: auto;      /* keeps full image */
-        max-width: none;
-    }
-
-    .back-area{
-        top: calc(var(--btn-top) + var(--mobile-top-adjust));
-        left: var(--btn-left);
-
-        width: calc(var(--btn-width) * var(--mobile-size-scale));
-        height: calc(var(--btn-height) * var(--mobile-size-scale));
+        height:100dvh;
+        width:auto;
+        max-width:none;
     }
 }
 
