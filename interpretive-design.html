@@ -13,7 +13,7 @@
 :root{
     --show-button: 1;
 
-    /* ONE SYSTEM FOR ALL DEVICES ✅ */
+    /* DESKTOP (unchanged) */
     --btn-top: 11%;
     --btn-left: 22%;
     --btn-width: 5%;
@@ -39,7 +39,7 @@ html, body{
     z-index:0;
 }
 
-/* ===== STAGE ===== */
+/* ===== STAGE (DESKTOP UNCHANGED) ===== */
 .stage{
     position:relative;
     z-index:1;
@@ -47,7 +47,7 @@ html, body{
     min-height:100vh;
     display:flex;
     justify-content:center;
-    align-items:center; /* keeps layout nice */
+    align-items:center;
 }
 
 /* ===== IMAGE WRAPPER ===== */
@@ -57,7 +57,7 @@ html, body{
     max-width:900px;
 }
 
-/* 🔥 CRITICAL: consistent scaling */
+/* DESKTOP IMAGE (unchanged) */
 .foreground img{
     width:100%;
     height:auto;
@@ -83,7 +83,7 @@ html, body{
     /* DEBUG */
     background: rgba(255, 0, 0, 0.3);
     border: 2px solid red;
-    color: white;
+    color:white;
 
     display:flex;
     align-items:center;
@@ -92,10 +92,31 @@ html, body{
     font-weight:bold;
 }
 
-/* ❌ REMOVE height-based mobile scaling */
+/* ===== 📱 IPHONE FIX ONLY ===== */
 @media (max-width: 768px){
+
+    body{
+        overflow:hidden; /* no scroll */
+    }
+
+    .stage{
+        height:100vh;
+        align-items:center;
+    }
+
     .foreground{
-        width:100%;
+        width:auto;
+        height:100vh;
+        max-width:none;
+
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .foreground img{
+        height:100vh;  /* 🔥 fills top → bottom */
+        width:auto;
     }
 }
 

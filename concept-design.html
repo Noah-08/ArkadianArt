@@ -13,11 +13,19 @@
 :root{
     --show-button: 1;
 
-    /* ONE SYSTEM FOR ALL DEVICES ✅ */
+    /* DESKTOP */
     --btn-top: 5%;
     --btn-left: 22%;
     --btn-width: 5%;
     --btn-height: 2%;
+
+    /* MOBILE CONTROL (unchanged system) */
+    --mobile-mode: 0;
+
+    --mobile-top: 18%;
+    --mobile-left: -5%;
+    --mobile-width: 8%;
+    --mobile-height: 4%;
 }
 
 /* ========================= */
@@ -39,7 +47,7 @@ html, body{
     z-index:0;
 }
 
-/* ===== STAGE ===== */
+/* ===== STAGE (UNCHANGED DESKTOP) ===== */
 .stage{
     position:relative;
     z-index:1;
@@ -47,7 +55,6 @@ html, body{
     min-height:100vh;
     display:flex;
     justify-content:center;
-    align-items:center; /* keeps it centered nicely */
 }
 
 /* ===== IMAGE WRAPPER ===== */
@@ -57,7 +64,7 @@ html, body{
     max-width:900px;
 }
 
-/* 🔥 CRITICAL: SAME SCALING EVERYWHERE */
+/* DESKTOP IMAGE (UNCHANGED) */
 .foreground img{
     width:100%;
     height:auto;
@@ -68,10 +75,10 @@ html, body{
 .back-area{
     position:absolute;
 
-    top: var(--btn-top);
-    left: var(--btn-left);
-    width: var(--btn-width);
-    height: var(--btn-height);
+    top: calc(var(--btn-top) * (1 - var(--mobile-mode)) + var(--mobile-top) * var(--mobile-mode));
+    left: calc(var(--btn-left) * (1 - var(--mobile-mode)) + var(--mobile-left) * var(--mobile-mode));
+    width: calc(var(--btn-width) * (1 - var(--mobile-mode)) + var(--mobile-width) * var(--mobile-mode));
+    height: calc(var(--btn-height) * (1 - var(--mobile-mode)) + var(--mobile-height) * var(--mobile-mode));
 
     z-index:99999;
     cursor:pointer;
@@ -91,10 +98,31 @@ html, body{
     color:white;
 }
 
-/* ❌ REMOVE mobile overrides that break scaling */
+/* ===== 📱 IPHONE FIX ONLY ===== */
 @media (max-width: 768px){
+
+    body{
+        overflow:hidden;
+    }
+
+    .stage{
+        height:100vh;
+        align-items:center; /* 🔥 center vertically */
+    }
+
     .foreground{
-        width:100%;
+        width:auto;
+        height:100vh;
+        max-width:none;
+
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .foreground img{
+        height:100vh;   /* 🔥 fills top → bottom */
+        width:auto;
     }
 }
 
