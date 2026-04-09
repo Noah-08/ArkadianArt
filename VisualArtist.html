@@ -50,10 +50,9 @@ html, body{
 }
 
 /* =========================
-   🎛️ BUTTON LINK CONTROL PANEL
+   🎛️ LINK CONTROL PANEL
 ========================= */
 
-/* 🔥 EDIT ALL YOUR LINKS HERE */
 :root{
     --link-1: "Drawing.html";
     --link-2: "Painting.html";
@@ -65,38 +64,10 @@ html, body{
     --link-8: "Ephemera.html";
     --link-9: "Mixed-Media.html";
     --link-10: "Illustration.html";
-    --link-11: "";
-    --link-12: "";
-    --link-13: "";
-    --link-14: "";
-    --link-15: "";
-    --link-16: "";
-    --link-17: "";
-    --link-18: "";
-    --link-19: "";
-    --link-20: "";
-    --link-21: "";
-    --link-22: "";
-    --link-23: "";
-    --link-24: "";
-    --link-25: "";
-    --link-26: "";
-    --link-27: "";
-    --link-28: "";
-    --link-29: "";
-    --link-30: "";
-    --link-31: "";
-    --link-32: "";
-    --link-33: "";
-    --link-34: "";
-    --link-35: "";
-    --link-36: "";
-    --link-37: "";
-    --link-38: "";
 }
 
 /* =========================
-   POSITION SYSTEM (UNCHANGED)
+   POSITION SYSTEM
 ========================= */
 
 :root{
@@ -123,10 +94,15 @@ html, body{
     --row-18: 90%;
     --row-19: 94%;
 
-    --back-left: 18%;
-    --back-top: 1%;
-    --back-width: 6%;
-    --back-height: 5%;
+    /* ===== BACK BUTTON CONTROL ===== */
+    --back-x: 13%;
+    --back-y: 2%;
+    --back-w: 30%;
+    --back-h: 5%;
+    --back-scale: 1;
+
+    /* 🔥 DEBUG TOGGLE */
+    --back-debug: 0;
 }
 
 /* ===== HITBOXES ===== */
@@ -137,17 +113,25 @@ html, body{
     height:2.8%;
 }
 
-/* BACK BUTTON */
+/* ===== BACK BUTTON ===== */
 .back-btn{
     position:absolute;
-    top: var(--back-top);
-    left: var(--back-left);
-    width: var(--back-width);
-    height: var(--back-height);
+
+    left: var(--back-x);
+    top: var(--back-y);
+
+    width: calc(var(--back-w) * var(--back-scale));
+    height: calc(var(--back-h) * var(--back-scale));
+
     z-index:999;
-    background: transparent;
-    border: none;
-    opacity: 0;
+    border:none;
+
+    /* DEBUG VISUAL */
+    background: rgba(255,0,0, calc(var(--back-debug) * 0.6));
+    opacity: var(--back-debug);
+
+    outline: calc(var(--back-debug) * 2px) solid red;
+    outline-offset: 2px;
 }
 
 /* COLUMNS */
@@ -195,10 +179,10 @@ html, body{
 
             <img class="main-image" src="Images/1 visual artist/VisualArtLanding.jpg">
 
-            <!-- BACK -->
+            <!-- BACK BUTTON -->
             <a class="back-btn" href="ArkadianArt.html"></a>
 
-            <!-- 🔥 ALL 38 BUTTONS -->
+            <!-- BUTTONS -->
             <script>
                 const wrapper = document.currentScript.parentElement;
 
@@ -207,11 +191,9 @@ html, body{
 
                     a.className = `hitbox btn-${i} ${i % 2 === 1 ? "btn-left" : "btn-right"}`;
 
-                    // pull link from CSS variable
                     const style = getComputedStyle(document.documentElement);
                     let link = style.getPropertyValue(`--link-${i}`).trim();
 
-                    // clean quotes
                     link = link.replace(/^["']|["']$/g, "");
 
                     if(link){
