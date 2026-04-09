@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Public Art Installation</title>
+<title>Public Art Install</title>
 
 <style>
 
@@ -11,16 +11,17 @@
    🎛️ CONTROL PANEL
    ========================= */
 :root{
-    --show-button: 0;
+    --show-button: 1;
 
-    --btn-top: 11%;
-    --btn-left: 18%;
+    /* 🔥 SCROLL CONTROL */
+    --force-scroll: auto; 
+    /* auto | scroll | hidden */
 
-    --btn-width: 5%;
-    --btn-height: 2%;
-
-    --mobile-size-scale: 1.4;
-    --mobile-top-adjust: -2%;
+    /* 🔥 UNIVERSAL BUTTON CONTROL */
+    --btn-top: 10%;
+    --btn-left: 15%;
+    --btn-width: 34%;
+    --btn-height: 6%;
 }
 
 /* ========================= */
@@ -30,6 +31,9 @@ html, body{
     padding:0;
     font-family:Arial, Helvetica, sans-serif;
     background:black;
+
+    overflow-y: var(--force-scroll);
+    overflow-x: hidden;
 }
 
 /* ===== BACKGROUND ===== */
@@ -47,9 +51,11 @@ html, body{
     position:relative;
     z-index:1;
     width:100%;
-    min-height:100vh;
+
+    /* 🔥 FIX: CENTER CONTENT */
     display:flex;
     justify-content:center;
+    align-items:flex-start;
 }
 
 /* ===== IMAGE WRAPPER ===== */
@@ -57,9 +63,12 @@ html, body{
     position:relative;
     width:100%;
     max-width:900px;
+
+    /* keeps mobile stability */
+    min-height:100vh;
 }
 
-/* DESKTOP */
+/* ===== IMAGE ===== */
 .foreground img{
     width:100%;
     height:auto;
@@ -72,48 +81,46 @@ html, body{
 
     top: var(--btn-top);
     left: var(--btn-left);
-
     width: var(--btn-width);
     height: var(--btn-height);
 
     z-index:99999;
-
     cursor:pointer;
     -webkit-tap-highlight-color: transparent;
 
     opacity: var(--show-button);
 
+    /* DEBUG */
     background: rgba(255, 0, 0, 0.3);
     border: 2px solid red;
-    color: white;
 
     display:flex;
     align-items:center;
     justify-content:center;
     font-size:12px;
     font-weight:bold;
+    color:white;
 }
 
-/* ===== MOBILE FIX ===== */
+/* ===== 📱 MOBILE FIX ===== */
 @media (max-width: 768px){
 
+    body{
+        overflow-y: var(--force-scroll);
+        overflow-x: hidden;
+    }
+
     .foreground{
-        display:flex;
-        justify-content:center;
+        width:100%;
+        min-height:100dvh;
     }
 
     .foreground img{
-        height: 100dvh;   /* 🔥 fills screen height */
-        width: auto;      /* keeps full image */
-        max-width: none;
-    }
+        width:100%;
 
-    .back-area{
-        top: calc(var(--btn-top) + var(--mobile-top-adjust));
-        left: var(--btn-left);
-
-        width: calc(var(--btn-width) * var(--mobile-size-scale));
-        height: calc(var(--btn-height) * var(--mobile-size-scale));
+        min-height:100dvh;
+        height:auto;
+        object-fit:cover;
     }
 }
 
@@ -127,7 +134,7 @@ html, body{
 <div class="stage">
 
     <div class="foreground">
-        <img src="Images/4 pub art install/PUI.png" alt="Drawing">
+        <img src="Images/4 pub art install/PUI.png" alt="Corporate Designer">
 
         <div class="back-area" onclick="goBack()">BACK</div>
     </div>

@@ -7,11 +7,33 @@
 
 <style>
 
+/* =========================
+   🎛️ CONTROL PANEL
+   ========================= */
+:root{
+    --show-button: 1;
+
+    /* 🔥 SCROLL CONTROL */
+    --force-scroll: auto; 
+    /* auto | scroll | hidden */
+
+    /* 🔥 UNIVERSAL BUTTON CONTROL */
+    --btn-top: 6%;
+    --btn-left: 15%;
+    --btn-width: 34%;
+    --btn-height: 6%;
+}
+
+/* ========================= */
+
 html, body{
     margin:0;
     padding:0;
     font-family:Arial, Helvetica, sans-serif;
     background:black;
+
+    overflow-y: var(--force-scroll);
+    overflow-x: hidden;
 }
 
 /* ===== BACKGROUND ===== */
@@ -24,15 +46,16 @@ html, body{
     z-index:0;
 }
 
-/* ===== SCROLLABLE STAGE ===== */
+/* ===== STAGE ===== */
 .stage{
     position:relative;
     z-index:1;
     width:100%;
-    min-height:100vh;
 
+    /* 🔥 FIX: CENTER CONTENT */
     display:flex;
     justify-content:center;
+    align-items:flex-start;
 }
 
 /* ===== IMAGE WRAPPER ===== */
@@ -40,43 +63,64 @@ html, body{
     position:relative;
     width:100%;
     max-width:900px;
+
+    /* keeps mobile stability */
+    min-height:100vh;
 }
 
-/* FULL IMAGE */
+/* ===== IMAGE ===== */
 .foreground img{
     width:100%;
     height:auto;
     display:block;
 }
 
-/* ===== BACK BUTTON (HIDDEN BUT ACTIVE) ===== */
+/* ===== BACK BUTTON ===== */
 .back-area{
     position:absolute;
 
-    top: 3%;
-    left: 22%;
-    width: 5%;
-    height: 2%;
+    top: var(--btn-top);
+    left: var(--btn-left);
+    width: var(--btn-width);
+    height: var(--btn-height);
 
     z-index:99999;
-
-    /* 👇 FULLY INVISIBLE BUT CLICKABLE */
-    background: transparent;
-    border: none;
-    color: transparent;
-    opacity: 0;
-
     cursor:pointer;
     -webkit-tap-highlight-color: transparent;
+
+    opacity: var(--show-button);
+
+    /* DEBUG */
+    background: rgba(255, 0, 0, 0.3);
+    border: 2px solid red;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:bold;
+    color:white;
 }
 
-/* ===== iPHONE TWEAK ===== */
+/* ===== 📱 MOBILE FIX ===== */
 @media (max-width: 768px){
-    .back-area{
-        top: 3.8%;
-        left: 21%;
-        width: 6.5%;
-        height: 3%;
+
+    body{
+        overflow-y: var(--force-scroll);
+        overflow-x: hidden;
+    }
+
+    .foreground{
+        width:100%;
+        min-height:100dvh;
+    }
+
+    .foreground img{
+        width:100%;
+
+        min-height:100dvh;
+        height:auto;
+        object-fit:cover;
     }
 }
 
@@ -90,9 +134,8 @@ html, body{
 <div class="stage">
 
     <div class="foreground">
-        <img src="Images/13 profile/Profile.jpg" alt="Drawing">
+        <img src="Images/13 profile/Profile.jpg" alt="Corporate Designer">
 
-        <!-- BACK BUTTON -->
         <div class="back-area" onclick="goBack()">BACK</div>
     </div>
 
