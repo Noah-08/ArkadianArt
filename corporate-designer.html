@@ -32,7 +32,6 @@ html, body{
     font-family:Arial, Helvetica, sans-serif;
     background:black;
 
-    /* 🔥 VERTICAL SCROLL ONLY */
     overflow-y: var(--force-scroll);
     overflow-x: hidden;
 }
@@ -53,8 +52,7 @@ html, body{
     z-index:1;
     width:100%;
 
-    min-height:100dvh; /* 🔥 REAL viewport height */
-
+    /* 🔥 FIX: CENTER CONTENT */
     display:flex;
     justify-content:center;
     align-items:flex-start;
@@ -65,9 +63,12 @@ html, body{
     position:relative;
     width:100%;
     max-width:900px;
+
+    /* keeps mobile stability */
+    min-height:100vh;
 }
 
-/* IMAGE */
+/* ===== IMAGE ===== */
 .foreground img{
     width:100%;
     height:auto;
@@ -109,21 +110,17 @@ html, body{
         overflow-x: hidden;
     }
 
-    .stage{
-        min-height:100dvh;
-    }
-
     .foreground{
-        min-height:100dvh; /* 🔥 fills screen if image is short */
+        width:100%;
+        min-height:100dvh;
     }
 
     .foreground img{
         width:100%;
-        height:auto;
 
-        /* 🔥 KEY FIX */
         min-height:100dvh;
-        object-fit: contain;
+        height:auto;
+        object-fit:cover;
     }
 }
 
