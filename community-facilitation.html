@@ -32,7 +32,7 @@ html, body{
     font-family:Arial, Helvetica, sans-serif;
     background:black;
 
-    /* 🔥 SCROLL (VERTICAL ONLY) */
+    /* 🔥 VERTICAL SCROLL ONLY */
     overflow-y: var(--force-scroll);
     overflow-x: hidden;
 }
@@ -52,7 +52,8 @@ html, body{
     position:relative;
     z-index:1;
     width:100%;
-    min-height:100vh;
+
+    min-height:100dvh; /* 🔥 REAL viewport height */
 
     display:flex;
     justify-content:center;
@@ -100,7 +101,7 @@ html, body{
     color:white;
 }
 
-/* ===== 📱 MOBILE (only layout, no button logic) ===== */
+/* ===== 📱 MOBILE FIX ===== */
 @media (max-width: 768px){
 
     body{
@@ -109,17 +110,20 @@ html, body{
     }
 
     .stage{
-        min-height:100vh;
-        align-items:flex-start;
+        min-height:100dvh;
     }
 
     .foreground{
-        width:100%;
+        min-height:100dvh; /* 🔥 fills screen if image is short */
     }
 
     .foreground img{
         width:100%;
         height:auto;
+
+        /* 🔥 KEY FIX */
+        min-height:100dvh;
+        object-fit: contain;
     }
 }
 
@@ -152,5 +156,3 @@ function goBack(){
 
 </body>
 </html>
-
-
