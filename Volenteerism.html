@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volenteerism.html</title>
+
+<style>
+
+/* =========================
+   🎛️ CONTROL PANEL
+   ========================= */
+:root{
+    --show-button: 0;
+
+    /* 🔥 SCROLL CONTROL */
+    --force-scroll: auto; 
+    /* auto | scroll | hidden */
+
+    /* 🔥 UNIVERSAL BUTTON CONTROL */
+    --btn-top: 5%;
+    --btn-left: 10%;
+    --btn-width: 34%;
+    --btn-height: 6%;
+}
+
+/* ========================= */
+
+html, body{
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:black;
+
+    overflow-y: var(--force-scroll);
+    overflow-x: hidden;
+}
+
+/* ===== BACKGROUND ===== */
+.bg{
+    position:fixed;
+    inset:0;
+    background:url("Images/1 visual artist/VA/38 volunteerism /Volunteerism.png") center/cover no-repeat;
+    filter:blur(20px) brightness(1);
+    transform:scale(1.1);
+    z-index:0;
+}
+
+/* ===== STAGE ===== */
+.stage{
+    position:relative;
+    z-index:1;
+    width:100%;
+
+    /* 🔥 FIX: CENTER CONTENT */
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+}
+
+/* ===== IMAGE WRAPPER ===== */
+.foreground{
+    position:relative;
+    width:100%;
+    max-width:900px;
+
+    /* keeps mobile stability */
+    min-height:100vh;
+}
+
+/* ===== IMAGE ===== */
+.foreground img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-area{
+    position:absolute;
+
+    top: var(--btn-top);
+    left: var(--btn-left);
+    width: var(--btn-width);
+    height: var(--btn-height);
+
+    z-index:99999;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    opacity: var(--show-button);
+
+    /* DEBUG */
+    background: rgba(255, 0, 0, 0.3);
+    border: 2px solid red;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:bold;
+    color:white;
+}
+
+/* ===== 📱 MOBILE FIX ===== */
+@media (max-width: 768px){
+
+    body{
+        overflow-y: var(--force-scroll);
+        overflow-x: hidden;
+    }
+
+    .foreground{
+        width:100%;
+        min-height:100dvh;
+    }
+
+    .foreground img{
+        width:100%;
+
+        min-height:100dvh;
+        height:auto;
+        object-fit:cover;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="stage">
+
+    <div class="foreground">
+        <img src="Images/1 visual artist/VA/38 volunteerism /Volunteerism.png" alt="Corporate Designer">
+
+        <div class="back-area" onclick="goBack()">BACK</div>
+    </div>
+
+</div>
+
+<script>
+function goBack(){
+    if (document.referrer && document.referrer !== window.location.href) {
+        window.history.back();
+    } else {
+        window.location.href = "VisualArtist.html";
+    }
+}
+</script>
+
+</body>
+</html>
+
