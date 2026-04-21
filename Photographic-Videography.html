@@ -14,9 +14,7 @@ body{
     overflow:hidden;
 }
 
-/* =========================================================
-   BLURRED BACKGROUND IMAGE
-========================================================= */
+/* BACKGROUND */
 .bg-blur{
     position:fixed;
     inset:0;
@@ -36,7 +34,7 @@ body{
     z-index:-1;
 }
 
-/* FRAME IMAGE */
+/* FRAME */
 .frame-image{
     position:fixed;
     top:50%;
@@ -68,7 +66,7 @@ body{
     transition: all 0.6s ease;
 }
 
-/* 🔥 EXPANDED STATE */
+/* EXPANDED */
 .video-wrapper.expanded{
     position:fixed;
     top:50%;
@@ -90,7 +88,6 @@ video{
     transition: all 0.6s ease;
 }
 
-/* make video fill screen when expanded */
 .video-wrapper.expanded video{
     width:100%;
     height:100%;
@@ -98,7 +95,7 @@ video{
     border-radius:0;
 }
 
-/* PLAY BUTTON */
+/* PLAY BUTTON (FIXED METHOD) */
 .play-btn{
     position:absolute;
     top:50%;
@@ -108,13 +105,20 @@ video{
     height:38px;
     cursor:pointer;
     z-index:5;
-    transition: opacity 0.3s ease;
+
+    opacity:1;
+    pointer-events:auto;
+
+    transition: opacity 0.25s ease;
 }
 
-/* =========================================================
-   BACK BUTTON
-========================================================= */
+/* hidden state */
+.play-btn.hidden{
+    opacity:0;
+    pointer-events:none;
+}
 
+/* BACK BUTTON */
 .back-btn{
     position:fixed;
     left: 30vw;
@@ -135,18 +139,13 @@ video{
     opacity: 0;
 }
 
-/* =========================================================
-   📱 iPHONE FIX
-========================================================= */
-
+/* iPHONE FIX */
 @media (max-width: 768px){
-
     .back-btn{
         left: calc(6vw + env(safe-area-inset-left));
         top: calc(12vh + env(safe-area-inset-top));
         width: 200px;
         height: 56px;
-        font-size: 12px;
     }
 
     body{
@@ -192,46 +191,48 @@ const video = document.getElementById("myVideo");
 const playBtn = document.getElementById("playBtn");
 const wrapper = document.getElementById("videoWrapper");
 
-let expanded = false;
+/* FORCE UI CONTROL */
+function showPlay(){
+    playBtn.classList.remove("hidden");
+}
 
-/* ▶️ PLAY BUTTON */
+function hidePlay(){
+    playBtn.classList.add("hidden");
+}
+
+/* PLAY BUTTON */
 playBtn.addEventListener("click", (e) => {
     e.stopPropagation();
 
     video.play();
     wrapper.classList.add("expanded");
-    expanded = true;
+    hidePlay(); // 🔥 force immediately
 });
 
-/* 🎬 VIDEO CLICK TO TOGGLE */
+/* VIDEO TOGGLE */
 video.addEventListener("click", () => {
 
     if(video.paused){
         video.play();
         wrapper.classList.add("expanded");
-        expanded = true;
+        hidePlay(); // 🔥 force
     } else {
         video.pause();
         wrapper.classList.remove("expanded");
-        expanded = false;
+        showPlay(); // 🔥 force
     }
 
 });
 
-/* UI STATES */
-video.addEventListener("play", () => {
-    playBtn.style.display = "none";
-});
+/* BACKUP EVENTS (still useful) */
+video.addEventListener("play", hidePlay);
+video.addEventListener("pause", showPlay);
+video.addEventListener("ended", showPlay);
 
-video.addEventListener("pause", () => {
-    playBtn.style.display = "block";
-});
+/* ensure visible initially */
+video.addEventListener("loadeddata", showPlay);
 
-video.addEventListener("loadeddata", () => {
-    playBtn.style.display = "block";
-});
-
-/* BACK BUTTON */
+/* BACK */
 function goBack(){
     if (document.referrer && document.referrer !== window.location.href) {
         window.history.back();
