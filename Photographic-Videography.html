@@ -95,7 +95,7 @@ video{
     border-radius:0;
 }
 
-/* PLAY BUTTON (FIXED METHOD) */
+/* PLAY BUTTON */
 .play-btn{
     position:absolute;
     top:50%;
@@ -200,13 +200,19 @@ function hidePlay(){
     playBtn.classList.add("hidden");
 }
 
+/* SHRINK VIDEO BACK DOWN */
+function shrinkVideo(){
+    wrapper.classList.remove("expanded");
+    showPlay();
+}
+
 /* PLAY BUTTON */
 playBtn.addEventListener("click", (e) => {
     e.stopPropagation();
 
     video.play();
     wrapper.classList.add("expanded");
-    hidePlay(); // 🔥 force immediately
+    hidePlay();
 });
 
 /* VIDEO TOGGLE */
@@ -215,19 +221,27 @@ video.addEventListener("click", () => {
     if(video.paused){
         video.play();
         wrapper.classList.add("expanded");
-        hidePlay(); // 🔥 force
+        hidePlay();
     } else {
         video.pause();
-        wrapper.classList.remove("expanded");
-        showPlay(); // 🔥 force
+        shrinkVideo();
     }
 
 });
 
-/* BACKUP EVENTS (still useful) */
+/* BACKUP EVENTS */
 video.addEventListener("play", hidePlay);
-video.addEventListener("pause", showPlay);
-video.addEventListener("ended", showPlay);
+
+video.addEventListener("pause", () => {
+    if (!video.ended) {
+        showPlay();
+    }
+});
+
+/* 🔥 when video finishes, shrink back down */
+video.addEventListener("ended", () => {
+    shrinkVideo();
+});
 
 /* ensure visible initially */
 video.addEventListener("loadeddata", showPlay);

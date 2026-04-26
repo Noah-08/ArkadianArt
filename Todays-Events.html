@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Today's Events</title>
+
+<style>
+
+/* =========================
+   🎛️ CONTROL PANEL
+   ========================= */
+:root{
+    --show-button: 0;
+
+    /* 🔥 SCROLL CONTROL */
+    --force-scroll: auto; 
+    /* auto | scroll | hidden */
+
+    /* =========================
+       BACK BUTTON CONTROL
+       ========================= */
+    --back-top: 8%;
+    --back-left: 10%;
+    --back-width: 34%;
+    --back-height: 6%;
+
+    /* =========================
+       PREVIOUS BUTTON CONTROL
+       ========================= */
+    --btn2-top: 83%;
+    --btn2-left: 0%;
+    --btn2-width: 34%;
+    --btn2-height: 6%;
+
+    /* =========================
+       NEXT BUTTON CONTROL
+       ========================= */
+    --btn3-top: 83%;
+    --btn3-left: 70%;
+    --btn3-width: 34%;
+    --btn3-height: 6%;
+}
+
+/* ========================= */
+
+html, body{
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:black;
+    overflow-y: var(--force-scroll);
+    overflow-x: hidden;
+}
+
+/* ===== BACKGROUND ===== */
+.bg{
+    position:fixed;
+    inset:0;
+    background:url("Images/New Images/1 todays event.png") center/cover no-repeat;
+    filter:blur(20px) brightness(1);
+    transform:scale(1.1);
+    z-index:0;
+}
+
+/* ===== STAGE ===== */
+.stage{
+    position:relative;
+    z-index:1;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+}
+
+/* ===== IMAGE WRAPPER ===== */
+.foreground{
+    position:relative;
+    width:100%;
+    max-width:900px;
+    min-height:100vh;
+}
+
+/* ===== IMAGE ===== */
+.foreground img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+/* ===== UNIVERSAL BUTTON STYLE ===== */
+.click-area{
+    position:absolute;
+    z-index:99999;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    opacity: var(--show-button);
+
+    /* DEBUG VISIBLE BUTTONS */
+    background: rgba(255, 0, 0, 0.3);
+    border: 2px solid red;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:bold;
+    color:white;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-area{
+    top: var(--back-top);
+    left: var(--back-left);
+    width: var(--back-width);
+    height: var(--back-height);
+}
+
+/* ===== PREVIOUS BUTTON ===== */
+.button-2{
+    top: var(--btn2-top);
+    left: var(--btn2-left);
+    width: var(--btn2-width);
+    height: var(--btn2-height);
+}
+
+/* ===== NEXT BUTTON ===== */
+.button-3{
+    top: var(--btn3-top);
+    left: var(--btn3-left);
+    width: var(--btn3-width);
+    height: var(--btn3-height);
+}
+
+/* ===== 📱 MOBILE FIX ===== */
+@media (max-width: 768px){
+
+    body{
+        overflow-y: var(--force-scroll);
+        overflow-x: hidden;
+    }
+
+    .foreground{
+        width:100%;
+        min-height:100dvh;
+    }
+
+    .foreground img{
+        width:100%;
+        min-height:100dvh;
+        height:auto;
+        object-fit:cover;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="stage">
+
+    <div class="foreground">
+        <img src="Images/New Images/1 todays event.png" alt="Today's Events">
+
+        <!-- BACK BUTTON -->
+        <div class="click-area back-area" onclick="goBack()">BACK</div>
+
+        <!-- PREVIOUS BUTTON -->
+        <div class="click-area button-2" onclick="goToPrevious()">PREVIOUS</div>
+
+        <!-- NEXT BUTTON -->
+        <div class="click-area button-3" onclick="goToNext()">NEXT</div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================
+   🔗 PAGE LINK CONTROL
+   Change these filenames
+   ========================= */
+
+const previousPage = "Arkadianart.html";
+const nextPage = "Todays-Events-2.html";
+const backHomePage = "Arkadianart.html";
+
+/* ===== BACK BUTTON ===== */
+function goBack(){
+    if (document.referrer && document.referrer !== window.location.href) {
+        window.history.back();
+    } else {
+        window.location.href = backHomePage;
+    }
+}
+
+/* ===== PREVIOUS BUTTON ===== */
+function goToPrevious(){
+    window.location.href = previousPage;
+}
+
+/* ===== NEXT BUTTON ===== */
+function goToNext(){
+    window.location.href = nextPage;
+}
+
+</script>
+
+</body>
+</html>
