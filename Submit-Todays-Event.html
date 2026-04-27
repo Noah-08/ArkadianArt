@@ -66,23 +66,14 @@ html, body{
     margin:0;
     padding:0;
     font-family:Arial, Helvetica, sans-serif;
-    background:black;
 
-    /* 🔥 CRITICAL FIX */
-    overflow-x:hidden;   /* NO sideways movement */
-    overflow-y:auto;     /* only vertical scroll */
-    height:auto;
+    /* ✅ CLEAN WHITE BACKGROUND */
+    background:white;
+
+    overflow-x:hidden;
+    overflow-y:auto;
     width:100%;
-}
-
-/* ===== BACKGROUND ===== */
-.bg{
-    position:fixed;
-    inset:0;
-    background:url("Images/Commisions/today's event.png") center/cover no-repeat;
-    filter:blur(20px) brightness(1);
-    transform:scale(1.1);
-    z-index:0;
+    height:auto;
 }
 
 /* ===== STAGE ===== */
@@ -100,8 +91,6 @@ html, body{
     position:relative;
     width:100%;
     max-width:900px;
-
-    /* 🔥 IMPORTANT FIX: ensures correct page height calculation */
     display:block;
 }
 
@@ -177,27 +166,27 @@ html, body{
     box-sizing:border-box;
 }
 
-/* POSITIONING (UNCHANGED) */
-.title-artwork{ top:27%; left:26%; width:47%; height:4%; }
-.number-artwork{ top:32%; left:26%; width:47%; height:4%; }
-.phone{ top:37%; left:26%; width:47%; height:4%; }
-.email{ top:42%; left:26%; width:47%; height:4%; }
-.date{ top:47%; left:26%; width:47%; height:4%; }
-.address{ top:52%; left:26%; width:47%; height:11%; }
-.instructions{ top:68%; left:26%; width:47%; height:17%; }
+/* POSITIONING (UNCHANGED) */ 
+.title-artwork{ top:30%; left:26%; width:47%; height:2.5%; } 
+.number-artwork{ top:35%; left:26%; width:47%; height:2.5%; } 
+.phone{ top:40%; left:26%; width:47%; height:2.5%; } 
+.email{ top:45%; left:26%; width:47%; height:2.5%; } 
+.date{ top:50%; left:26%; width:47%; height:2.5%; } 
+.address{ top:55%; left:26%; width:47%; height:8%; } 
+.instructions{ top:65%; left:26%; width:47%; height:19%; }
 
 textarea{
     font-family:Arial, Helvetica, sans-serif;
 }
 
 /* =========================
-   📱 MOBILE FIX (SAFE ONLY)
+   📱 MOBILE FIX (UNCHANGED LOGIC)
    ========================= */
 @media (max-width:768px){
 
     html, body{
-        overflow-x:hidden; /* NO sideways scroll */
-        overflow-y:auto;   /* ONLY vertical scroll */
+        overflow-x:hidden;
+        overflow-y:auto;
         width:100%;
     }
 
@@ -206,7 +195,6 @@ textarea{
         max-width:100%;
     }
 
-    /* ONLY fix typing size (does NOT affect layout) */
     input,
     textarea{
         font-size:14px !important;
@@ -222,8 +210,6 @@ textarea{
 </head>
 
 <body>
-
-<div class="bg"></div>
 
 <div class="stage">
 <div class="foreground">
