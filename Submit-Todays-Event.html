@@ -11,8 +11,7 @@
    🎛️ CONTROL PANEL
    ========================= */
 :root{
-    --show-button: 1;
-    --force-scroll: auto;
+    --ui-opacity: 0; /* 🔥 1 = visible UI boxes, 0 = hidden UI boxes */
 
     --back-top: 8%;
     --back-left: 10%;
@@ -66,10 +65,7 @@ html, body{
     margin:0;
     padding:0;
     font-family:Arial, Helvetica, sans-serif;
-
-    /* ✅ CLEAN WHITE BACKGROUND */
     background:white;
-
     overflow-x:hidden;
     overflow-y:auto;
     width:100%;
@@ -79,11 +75,9 @@ html, body{
 /* ===== STAGE ===== */
 .stage{
     position:relative;
-    z-index:1;
     width:100%;
     display:flex;
     justify-content:center;
-    align-items:flex-start;
 }
 
 /* ===== FOREGROUND ===== */
@@ -91,24 +85,24 @@ html, body{
     position:relative;
     width:100%;
     max-width:900px;
-    display:block;
 }
 
-/* ===== IMAGE ===== */
 .foreground img{
     width:100%;
     height:auto;
     display:block;
 }
 
-/* ===== CLICK AREAS ===== */
+/* =========================
+   CLICK AREAS (BUTTONS)
+   ========================= */
 .click-area{
     position:absolute;
     z-index:99999;
     cursor:pointer;
     -webkit-tap-highlight-color: transparent;
 
-    opacity: var(--show-button);
+    opacity: var(--ui-opacity);
 
     background: rgba(255, 0, 0, 0.30);
     border: 2px solid red;
@@ -140,6 +134,8 @@ html, body{
     width: var(--submit-width);
     height: var(--submit-height);
 
+    opacity: var(--ui-opacity);
+
     background: rgba(255, 0, 0, 0.30);
     border: 2px solid red;
 
@@ -149,13 +145,17 @@ html, body{
     color:white;
 }
 
-/* ===== INPUTS ===== */
+/* =========================
+   INPUT BOXES
+   ========================= */
 .form-input{
     position:absolute;
     z-index:9999;
 
-    background: rgba(255, 0, 0, 0.20);
-    border: 2px solid red;
+    /* 🔥 UI VISIBILITY CONTROL */
+    background: rgba(255, 0, 0, calc(0.20 * var(--ui-opacity)));
+    border: 2px solid rgba(255, 0, 0, var(--ui-opacity));
+
     outline:none;
 
     font-size:18px;
@@ -166,43 +166,35 @@ html, body{
     box-sizing:border-box;
 }
 
-/* POSITIONING (UNCHANGED) */ 
-.title-artwork{ top:30%; left:26%; width:47%; height:2.5%; } 
-.number-artwork{ top:35%; left:26%; width:47%; height:2.5%; } 
-.phone{ top:40%; left:26%; width:47%; height:2.5%; } 
-.email{ top:45%; left:26%; width:47%; height:2.5%; } 
-.date{ top:50%; left:26%; width:47%; height:2.5%; } 
-.address{ top:55%; left:26%; width:47%; height:8%; } 
+/* INPUT POSITIONS */
+.title-artwork{ top:30%; left:26%; width:47%; height:2.5%; }
+.number-artwork{ top:35%; left:26%; width:47%; height:2.5%; }
+.phone{ top:40%; left:26%; width:47%; height:2.5%; }
+.email{ top:45%; left:26%; width:47%; height:2.5%; }
+.date{ top:50%; left:26%; width:47%; height:2.5%; }
+.address{ top:55%; left:26%; width:47%; height:8%; }
 .instructions{ top:65%; left:26%; width:47%; height:19%; }
 
-textarea{
-    font-family:Arial, Helvetica, sans-serif;
+/* =========================
+   IMPORTANT: typed text stays visible
+   ========================= */
+input, textarea{
+    color:#7c1a68;
+    font-size:18px;
 }
 
 /* =========================
-   📱 MOBILE FIX (UNCHANGED LOGIC)
+   MOBILE
    ========================= */
 @media (max-width:768px){
 
-    html, body{
-        overflow-x:hidden;
-        overflow-y:auto;
-        width:100%;
-    }
-
-    .foreground{
-        width:100%;
-        max-width:100%;
-    }
-
-    input,
-    textarea{
-        font-size:14px !important;
-        line-height:1.2;
-    }
-
     .form-input{
+        font-size:13px;
         padding:6px;
+    }
+
+    input, textarea{
+        font-size:13px;
     }
 }
 
@@ -242,13 +234,11 @@ textarea{
 </div>
 
 <script>
-const backHomePage = "Todays-Events.html";
-
 function goBack(){
     if (document.referrer && document.referrer !== window.location.href){
         window.history.back();
     } else {
-        window.location.href = backHomePage;
+        window.location.href = "Todays-Events.html";
     }
 }
 </script>
