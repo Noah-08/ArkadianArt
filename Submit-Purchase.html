@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Commisions</title>
+<title>Commisioning Purchase</title>
 
 <style>
 
@@ -53,6 +53,10 @@
     --address-width: 47%;
     --address-height: 11%;
 
+    --instructions-top: 68%;
+    --instructions-left: 26%;
+    --instructions-width: 47%;
+    --instructions-height: 17%;
 }
 
 /* ========================= */
@@ -163,12 +167,13 @@ html, body{
 }
 
 /* INPUT POSITIONS */
-.name{ top:32.5%; left:26%; width:47%; height:2.5%; }
-.organisation{ top:37.5%; left:26%; width:47%; height:2.5%; }
-.phone{ top:43%; left:26%; width:47%; height:2.5%; }
-.email{ top:48%; left:26%; width:47%; height:2.5%; }
-.interest-in-which-activity{ top:53%; left:26%; width:47%; height:2.5%; }
-.request{ top:58%; left:26%; width:47%; height:25%; }
+.title-artwork{ top:30%; left:26%; width:47%; height:2.5%; }
+.number-artwork{ top:35%; left:26%; width:47%; height:2.5%; }
+.phone{ top:40%; left:26%; width:47%; height:2.5%; }
+.email{ top:45%; left:26%; width:47%; height:2.5%; }
+.date{ top:50%; left:26%; width:47%; height:2.5%; }
+.address{ top:55%; left:26%; width:47%; height:8%; }
+.instructions{ top:65%; left:26%; width:47%; height:19%; }
 
 /* =========================
    IMPORTANT: typed text stays visible
@@ -201,7 +206,7 @@ input, textarea{
 <div class="stage">
 <div class="foreground">
 
-<img src="Images/Commisions/3 commissioning.png" alt="Commission Form">
+<img src="Images/Commisions/purchase & delivery.png" alt="Commission Form">
 
 <form action="https://formsubmit.co/noahallanphelps@gmail.com" method="POST">
 
@@ -233,7 +238,7 @@ function goBack(){
     if (document.referrer && document.referrer !== window.location.href){
         window.history.back();
     } else {
-        window.location.href = "ArkadianArt.html";
+        window.location.href = "Purchase-1.html";
     }
 }
 </script>
