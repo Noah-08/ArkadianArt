@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commissioning Today's Event</title>
+
+<style>
+
+/* =========================
+   🎛️ CONTROL PANEL
+   ========================= */
+:root{
+    --show-button: 1;
+    --force-scroll: auto;
+
+    /* =========================
+       BACK BUTTON CONTROL
+       ========================= */
+    --back-top: 8%;
+    --back-left: 10%;
+    --back-width: 34%;
+    --back-height: 6%;
+
+    /* =========================
+       SUBMIT BUTTON CONTROL
+       ========================= */
+    --submit-top: 8%;
+    --submit-left: 65%;
+    --submit-width: 34%;
+    --submit-height: 6%;
+
+    /* =========================
+       FORM BOX CONTROL
+       Change these freely
+       ========================= */
+
+    /* 1. Title of Artwork */
+    --title-top: 27%;
+    --title-left: 26%;
+    --title-width: 47%;
+    --title-height: 4%;
+
+    /* 2. Number of Artwork */
+    --number-top: 32%;
+    --number-left: 26%;
+    --number-width: 47%;
+    --number-height: 4%;
+
+    /* 3. Phone */
+    --phone-top: 37%;
+    --phone-left: 26%;
+    --phone-width: 47%;
+    --phone-height: 4%;
+
+    /* 4. Email */
+    --email-top: 42%;
+    --email-left: 26%;
+    --email-width: 47%;
+    --email-height: 4%;
+
+    /* 5. Today's Date */
+    --date-top: 47%;
+    --date-left: 26%;
+    --date-width: 47%;
+    --date-height: 4%;
+
+    /* 6. Postal Address */
+    --address-top: 52%;
+    --address-left: 26%;
+    --address-width: 47%;
+    --address-height: 11%;
+
+    /* 7. Special Instructions */
+    --instructions-top: 68%;
+    --instructions-left: 26%;
+    --instructions-width: 47%;
+    --instructions-height: 17%;
+}
+
+/* ========================= */
+
+html, body{
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:black;
+    overflow-y: var(--force-scroll);
+    overflow-x:hidden;
+}
+
+/* ===== BACKGROUND ===== */
+
+.bg{
+    position:fixed;
+    inset:0;
+    background:url("Images/Commisions/today's event.png") center/cover no-repeat;
+    filter:blur(20px) brightness(1);
+    transform:scale(1.1);
+    z-index:0;
+}
+
+/* ===== STAGE ===== */
+
+.stage{
+    position:relative;
+    z-index:1;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+}
+
+/* ===== FOREGROUND ===== */
+
+.foreground{
+    position:relative;
+    width:100%;
+    max-width:900px;
+    min-height:100vh;
+}
+
+.foreground img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+/* ===== BUTTONS ===== */
+
+.click-area{
+    position:absolute;
+    z-index:99999;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    opacity: var(--show-button);
+
+    background: rgba(255, 0, 0, 0.30);
+    border: 2px solid red;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:12px;
+    font-weight:bold;
+    color:white;
+}
+
+/* BACK BUTTON */
+
+.back-area{
+    top: var(--back-top);
+    left: var(--back-left);
+    width: var(--back-width);
+    height: var(--back-height);
+}
+
+/* SUBMIT BUTTON */
+
+.submit-button{
+    position:absolute;
+    z-index:99999;
+
+    top: var(--submit-top);
+    left: var(--submit-left);
+    width: var(--submit-width);
+    height: var(--submit-height);
+
+    background: rgba(255, 0, 0, 0.30);
+    border: 2px solid red;
+
+    cursor:pointer;
+    font-size:12px;
+    font-weight:bold;
+    color:white;
+}
+
+/* ===== FORM INPUTS ===== */
+
+.form-input{
+    position:absolute;
+    z-index:9999;
+
+    background: rgba(255, 0, 0, 0.20);
+    border: 2px solid red;
+    outline:none;
+
+    font-size:18px;
+    color:#7c1a68;
+
+    padding:10px;
+    resize:none;
+    box-sizing:border-box;
+}
+
+/* 1 */
+
+.title-artwork{
+    top: var(--title-top);
+    left: var(--title-left);
+    width: var(--title-width);
+    height: var(--title-height);
+}
+
+/* 2 */
+
+.number-artwork{
+    top: var(--number-top);
+    left: var(--number-left);
+    width: var(--number-width);
+    height: var(--number-height);
+}
+
+/* 3 */
+
+.phone{
+    top: var(--phone-top);
+    left: var(--phone-left);
+    width: var(--phone-width);
+    height: var(--phone-height);
+}
+
+/* 4 */
+
+.email{
+    top: var(--email-top);
+    left: var(--email-left);
+    width: var(--email-width);
+    height: var(--email-height);
+}
+
+/* 5 */
+
+.date{
+    top: var(--date-top);
+    left: var(--date-left);
+    width: var(--date-width);
+    height: var(--date-height);
+}
+
+/* 6 */
+
+.address{
+    top: var(--address-top);
+    left: var(--address-left);
+    width: var(--address-width);
+    height: var(--address-height);
+}
+
+/* 7 */
+
+.instructions{
+    top: var(--instructions-top);
+    left: var(--instructions-left);
+    width: var(--instructions-width);
+    height: var(--instructions-height);
+}
+
+textarea{
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width:768px){
+
+    .form-input{
+        font-size:14px;
+    }
+
+    .foreground{
+        width:100%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="stage">
+
+<div class="foreground">
+
+    <img src="Images/Commisions/today's event.png" alt="Commission Form">
+
+    <!-- FORM -->
+    <form action="https://formsubmit.co/noahallanphelps@gmailcom" method="POST">
+
+        <!-- Hidden Settings -->
+        <input type="hidden" name="_subject" value="New Today's Event Commission Submission">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+
+        <!-- INPUT FIELDS -->
+
+        <input
+            class="form-input title-artwork"
+            type="text"
+            name="Title of Artwork"
+            required
+        >
+
+        <input
+            class="form-input number-artwork"
+            type="text"
+            name="Number of Artwork"
+            required
+        >
+
+        <input
+            class="form-input phone"
+            type="text"
+            name="Phone"
+            required
+        >
+
+        <input
+            class="form-input email"
+            type="email"
+            name="Email"
+            required
+        >
+
+        <input
+            class="form-input date"
+            type="text"
+            name="Today's Date"
+            required
+        >
+
+        <textarea
+            class="form-input address"
+            name="Postal Address"
+            required
+        ></textarea>
+
+        <textarea
+            class="form-input instructions"
+            name="Special Instructions"
+            required
+        ></textarea>
+
+        <!-- SUBMIT BUTTON -->
+
+        <button
+            type="submit"
+            class="submit-button"
+        >
+            SUBMIT
+        </button>
+
+    </form>
+
+    <!-- BACK BUTTON -->
+
+    <div
+        class="click-area back-area"
+        onclick="goBack()"
+    >
+        BACK
+    </div>
+
+</div>
+</div>
+
+<script>
+
+const backHomePage = "Todays-Events.html";
+
+function goBack(){
+    if (
+        document.referrer &&
+        document.referrer !== window.location.href
+    ) {
+        window.history.back();
+    } else {
+        window.location.href = backHomePage;
+    }
+}
+
+</script>
+
+</body>
+</html>

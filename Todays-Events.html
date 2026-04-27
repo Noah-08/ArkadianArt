@@ -40,6 +40,14 @@
     --btn3-left: 70%;
     --btn3-width: 34%;
     --btn3-height: 6%;
+
+    /* =========================
+       SUBMIT BUTTON CONTROL
+       ========================= */
+    --submit-top: 8%;
+    --submit-left: 65%;
+    --submit-width: 34%;
+    --submit-height: 6%;
 }
 
 /* ========================= */
@@ -133,6 +141,14 @@ html, body{
     height: var(--btn3-height);
 }
 
+/* ===== SUBMIT BUTTON ===== */
+.submit-button{
+    top: var(--submit-top);
+    left: var(--submit-left);
+    width: var(--submit-width);
+    height: var(--submit-height);
+}
+
 /* ===== 📱 MOBILE FIX ===== */
 @media (max-width: 768px){
 
@@ -164,7 +180,7 @@ html, body{
 <div class="stage">
 
     <div class="foreground">
-        <img src="Images/New Images/1 todays event.png" alt="Today's Events">
+        <img src="Images/New Images/1 todays event.png" alt="For Purchase">
 
         <!-- BACK BUTTON -->
         <div class="click-area back-area" onclick="goBack()">BACK</div>
@@ -174,6 +190,9 @@ html, body{
 
         <!-- NEXT BUTTON -->
         <div class="click-area button-3" onclick="goToNext()">NEXT</div>
+
+        <!-- SUBMIT BUTTON -->
+        <div class="click-area submit-button" onclick="goToSubmit()">SUBMIT</div>
 
     </div>
 
@@ -188,6 +207,7 @@ html, body{
 
 const previousPage = "Arkadianart.html";
 const nextPage = "Todays-Events-2.html";
+const submitPage = "Submit-Todays-Event.html";
 const backHomePage = "Arkadianart.html";
 
 /* ===== BACK BUTTON ===== */
@@ -207,6 +227,11 @@ function goToPrevious(){
 /* ===== NEXT BUTTON ===== */
 function goToNext(){
     window.location.href = nextPage;
+}
+
+/* ===== SUBMIT BUTTON ===== */
+function goToSubmit(){
+    window.location.href = submitPage;
 }
 
 </script>
