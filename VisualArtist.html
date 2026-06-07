@@ -35,7 +35,7 @@ html, body{
 
 /* ===== RESPONSIVE FRAME ===== */
 .scale-wrapper{
-    width: min(1000px, 100vw);
+    width:min(1000px, 100vw);
 }
 
 /* ===== IMAGE WRAPPER ===== */
@@ -90,8 +90,10 @@ html, body{
     --link-34: "Aerial-Art.html";
     --link-35: "Proposals.html";
     --link-36: "Building-Scape-Design.html";
-    --link-37: "Art-Judging.html";
-    --link-38: "Volenteerism.html";
+    --link-37: "Childhood.html";
+    --link-38: "Portrait.html";
+    --link-39: "Art-Judging.html";
+    --link-40: "Volenteerism.html";
 }
 
 /* =========================
@@ -99,38 +101,40 @@ html, body{
 ========================= */
 
 :root{
-    --left-col: 30%;
-    --right-col: 30%;
+    --left-col:30%;
+    --right-col:30%;
 
-    --row-1: 8%;
-    --row-2: 13%;
-    --row-3: 18%;
-    --row-4: 23%;
-    --row-5: 27%;
-    --row-6: 32%;
-    --row-7: 37%;
-    --row-8: 41.5%;
-    --row-9: 46%;
-    --row-10: 52%;
-    --row-11: 56%;
-    --row-12: 61%;
-    --row-13: 66%;
-    --row-14: 71%;
-    --row-15: 76%;
-    --row-16: 80%;
-    --row-17: 85%;
-    --row-18: 90%;
-    --row-19: 94%;
+    --row-1:8%;
+    --row-2:12%;
+    --row-3:17%;
+    --row-4:21%;
+    --row-5:26%;
+    --row-6:30.5%;
+    --row-7:35%;
+    --row-8:39%;
+    --row-9:44%;
+    --row-10:49%;
+    --row-11:53.5%;
+    --row-12:58%;
+    --row-13:62.5%;
+    --row-14:67%;
+    --row-15:71.5%;
+    --row-16:76%;
+    --row-17:80.5%;
+    --row-18:85%;
+    --row-19:89.5%;
+    --row-20:94.5%;
 
     /* ===== BACK BUTTON CONTROL ===== */
-    --back-x: 13%;
-    --back-y: 2%;
-    --back-w: 30%;
-    --back-h: 5%;
-    --back-scale: 1;
+    --back-x:13%;
+    --back-y:2%;
+    --back-w:30%;
+    --back-h:5%;
+    --back-scale:1;
 
-    /* 🔥 DEBUG TOGGLE */
-    --back-debug: 0;
+    /* ===== DEBUG TOGGLES ===== */
+    --back-debug:0;
+    --hitbox-debug:0;
 }
 
 /* ===== HITBOXES ===== */
@@ -139,27 +143,30 @@ html, body{
     z-index:10;
     cursor:pointer;
     height:2.8%;
+
+    background:rgba(0,255,255, calc(var(--hitbox-debug) * 0.5));
+    outline:calc(var(--hitbox-debug) * 2px) solid cyan;
+    outline-offset:1px;
 }
 
 /* ===== BACK BUTTON ===== */
 .back-btn{
     position:absolute;
 
-    left: var(--back-x);
-    top: var(--back-y);
+    left:var(--back-x);
+    top:var(--back-y);
 
-    width: calc(var(--back-w) * var(--back-scale));
-    height: calc(var(--back-h) * var(--back-scale));
+    width:calc(var(--back-w) * var(--back-scale));
+    height:calc(var(--back-h) * var(--back-scale));
 
     z-index:999;
     border:none;
 
-    /* DEBUG VISUAL */
-    background: rgba(255,0,0, calc(var(--back-debug) * 0.6));
-    opacity: var(--back-debug);
+    background:rgba(255,0,0, calc(var(--back-debug) * 0.6));
+    opacity:max(var(--back-debug), 0.001);
 
-    outline: calc(var(--back-debug) * 2px) solid red;
-    outline-offset: 2px;
+    outline:calc(var(--back-debug) * 2px) solid red;
+    outline-offset:2px;
 }
 
 /* COLUMNS */
@@ -174,25 +181,26 @@ html, body{
 }
 
 /* ROWS */
-.btn-1,.btn-2   { top:var(--row-1); }
-.btn-3,.btn-4   { top:var(--row-2); }
-.btn-5,.btn-6   { top:var(--row-3); }
-.btn-7,.btn-8   { top:var(--row-4); }
-.btn-9,.btn-10  { top:var(--row-5); }
-.btn-11,.btn-12 { top:var(--row-6); }
-.btn-13,.btn-14 { top:var(--row-7); }
-.btn-15,.btn-16 { top:var(--row-8); }
-.btn-17,.btn-18 { top:var(--row-9); }
-.btn-19,.btn-20 { top:var(--row-10); }
-.btn-21,.btn-22 { top:var(--row-11); }
-.btn-23,.btn-24 { top:var(--row-12); }
-.btn-25,.btn-26 { top:var(--row-13); }
-.btn-27,.btn-28 { top:var(--row-14); }
-.btn-29,.btn-30 { top:var(--row-15); }
-.btn-31,.btn-32 { top:var(--row-16); }
-.btn-33,.btn-34 { top:var(--row-17); }
-.btn-35,.btn-36 { top:var(--row-18); }
-.btn-37,.btn-38 { top:var(--row-19); }
+.btn-1,.btn-2{top:var(--row-1);}
+.btn-3,.btn-4{top:var(--row-2);}
+.btn-5,.btn-6{top:var(--row-3);}
+.btn-7,.btn-8{top:var(--row-4);}
+.btn-9,.btn-10{top:var(--row-5);}
+.btn-11,.btn-12{top:var(--row-6);}
+.btn-13,.btn-14{top:var(--row-7);}
+.btn-15,.btn-16{top:var(--row-8);}
+.btn-17,.btn-18{top:var(--row-9);}
+.btn-19,.btn-20{top:var(--row-10);}
+.btn-21,.btn-22{top:var(--row-11);}
+.btn-23,.btn-24{top:var(--row-12);}
+.btn-25,.btn-26{top:var(--row-13);}
+.btn-27,.btn-28{top:var(--row-14);}
+.btn-29,.btn-30{top:var(--row-15);}
+.btn-31,.btn-32{top:var(--row-16);}
+.btn-33,.btn-34{top:var(--row-17);}
+.btn-35,.btn-36{top:var(--row-18);}
+.btn-37,.btn-38{top:var(--row-19);}
+.btn-39,.btn-40{top:var(--row-20);}
 
 </style>
 </head>
@@ -205,7 +213,7 @@ html, body{
     <div class="scale-wrapper">
         <div class="image-wrapper">
 
-            <img class="main-image" src="Images/1 visual artist/VisualArtLanding.jpg">
+            <img class="main-image" src="Images/1 visual artist/VAss June.png">
 
             <!-- BACK BUTTON -->
             <a class="back-btn" href="ArkadianArt.html"></a>
@@ -214,10 +222,11 @@ html, body{
             <script>
                 const wrapper = document.currentScript.parentElement;
 
-                for(let i = 1; i <= 38; i++){
+                for(let i = 1; i <= 40; i++){
                     const a = document.createElement("a");
 
-                    a.className = `hitbox btn-${i} ${i % 2 === 1 ? "btn-left" : "btn-right"}`;
+                    a.className =
+                        `hitbox btn-${i} ${i % 2 === 1 ? "btn-left" : "btn-right"}`;
 
                     const style = getComputedStyle(document.documentElement);
                     let link = style.getPropertyValue(`--link-${i}`).trim();
