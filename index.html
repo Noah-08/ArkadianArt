@@ -8,7 +8,7 @@
 <style>
 
 /* =========================================================
-   🎛️ ADJUSTABLE SETTINGS
+   🎛️ BASE SETTINGS (MAC / DESKTOP — KEEP AS IS)
 ========================================================= */
 
 :root{
@@ -23,6 +23,24 @@
     --hold-start: 1.5s;
     --to-top: 3s;
     --to-button: 2.5s;
+}
+
+/* =========================================================
+   🔥 MOBILE OVERRIDES (THIS IS THE FIX)
+========================================================= */
+
+@media (max-width: 768px){
+
+    :root{
+
+        /* 👇 adjusted for phone aspect ratio */
+        --pan-top: 140px;      /* was 70px */
+        --pan-button: -320px;  /* was -180px */
+
+        /* optional tweak: slightly reduce zoom so framing matches */
+        --zoom-top: 1.9;
+        --zoom-button: 1.8;
+    }
 }
 
 /* ========================================================= */
@@ -91,7 +109,7 @@ html{
 }
 
 /* =========================================================
-   CONTINUE BUTTON (LOCKED BY DEFAULT)
+   CONTINUE BUTTON
 ========================================================= */
 
 .continue-hitbox{
@@ -109,14 +127,13 @@ html{
     border:none;
     opacity:0;
 
-    pointer-events:none; /* 🔥 THIS BLOCKS CLICKING */
+    pointer-events:none;
 
     transition:opacity 0.6s ease;
 
     -webkit-tap-highlight-color: transparent;
 }
 
-/* unlocked state */
 .continue-hitbox.enabled{
     pointer-events:auto;
     cursor:pointer;
@@ -124,7 +141,7 @@ html{
 }
 
 /* =========================================================
-   🎬 CAMERA ANIMATION
+   🎬 ANIMATION
 ========================================================= */
 
 @keyframes cameraMove {
@@ -147,7 +164,7 @@ html{
 }
 
 /* =========================================================
-   📱 MOBILE FIX
+   MOBILE FIX (layout only)
 ========================================================= */
 
 @media (max-width: 768px){
@@ -186,6 +203,7 @@ html{
 </div>
 
 <script>
+
 /* =========================================================
    UNLOCK BUTTON AFTER ANIMATION FINISHES
 ========================================================= */
@@ -193,15 +211,10 @@ html{
 const viewport = document.querySelector(".viewport");
 const button = document.querySelector(".continue-hitbox");
 
-/* total animation duration (matches CSS) */
-const totalTime =
-    parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hold-start")) +
-    parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--to-top")) +
-    parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--to-button"));
-
 viewport.addEventListener("animationend", () => {
     button.classList.add("enabled");
 });
+
 </script>
 
 </body>
