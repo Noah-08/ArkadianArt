@@ -8,7 +8,7 @@
 <style>
 
 /* =========================================================
-   🎛️ BASE SETTINGS (MAC / DESKTOP — KEEP AS IS)
+   🎛️ BASE SETTINGS
 ========================================================= */
 
 :root{
@@ -23,24 +23,9 @@
     --hold-start: 1.5s;
     --to-top: 3s;
     --to-button: 2.5s;
-}
 
-/* =========================================================
-   🔥 MOBILE OVERRIDES (THIS IS THE FIX)
-========================================================= */
-
-@media (max-width: 768px){
-
-    :root{
-
-        /* 👇 adjusted for phone aspect ratio */
-        --pan-top: 140px;      /* was 70px */
-        --pan-button: -320px;  /* was -180px */
-
-        /* optional tweak: slightly reduce zoom so framing matches */
-        --zoom-top: 1.9;
-        --zoom-button: 1.8;
-    }
+    /* FIX: real viewport unit for iPhone Safari */
+    --vh: 1vh;
 }
 
 /* ========================================================= */
@@ -48,14 +33,16 @@
 html, body{
     margin:0;
     padding:0;
-    height:100%;
     overflow:hidden;
     font-family:Arial, Helvetica, sans-serif;
     background:black;
+    height:100%;
 }
 
-html{
-    height:-webkit-fill-available;
+/* ❗ IMPORTANT: remove Safari vh bug */
+body{
+    position:relative;
+    height: calc(var(--vh) * 100);
 }
 
 /* Background blur */
@@ -70,15 +57,14 @@ html{
     z-index:-1;
 }
 
-/* Container */
+/* =========================================================
+   CONTAINER (NO FLEX — prevents vertical shifting)
+========================================================= */
+
 .container{
     position:relative;
     width:100%;
-    height:100vh;
-    height:-webkit-fill-available;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    height:100%;
     overflow:hidden;
 }
 
@@ -87,9 +73,12 @@ html{
 ========================================================= */
 
 .viewport{
-    position:relative;
+    position:absolute;
+    top:0;
+    left:0;
     width:100%;
     height:100%;
+
     transform-origin:center center;
 
     animation: cameraMove calc(var(--hold-start) + var(--to-top) + var(--to-button))
@@ -102,7 +91,7 @@ html{
     top:0;
     left:50%;
     transform:translateX(-50%);
-    height:100vh;
+    height:100%;
     width:auto;
     object-fit:contain;
     display:block;
@@ -128,7 +117,6 @@ html{
     opacity:0;
 
     pointer-events:none;
-
     transition:opacity 0.6s ease;
 
     -webkit-tap-highlight-color: transparent;
@@ -141,7 +129,7 @@ html{
 }
 
 /* =========================================================
-   🎬 ANIMATION
+   🎬 CAMERA ANIMATION (FIXED SCALE LAYER)
 ========================================================= */
 
 @keyframes cameraMove {
@@ -164,23 +152,8 @@ html{
 }
 
 /* =========================================================
-   MOBILE FIX (layout only)
+   MOBILE FIX SCRIPT SUPPORT
 ========================================================= */
-
-@media (max-width: 768px){
-
-    body{
-        overflow:hidden;
-        position:fixed;
-        width:100%;
-        height:100%;
-    }
-
-    .main-image{
-        height:100vh;
-        height:-webkit-fill-available;
-    }
-}
 
 </style>
 
@@ -203,6 +176,20 @@ html{
 </div>
 
 <script>
+
+/* =========================================================
+   FIX iPHONE VH BUG PROPERLY
+========================================================= */
+
+function setVH(){
+    document.documentElement.style.setProperty(
+        '--vh',
+        `${window.innerHeight * 0.01}px`
+    );
+}
+
+setVH();
+window.addEventListener('resize', setVH);
 
 /* =========================================================
    UNLOCK BUTTON AFTER ANIMATION FINISHES
