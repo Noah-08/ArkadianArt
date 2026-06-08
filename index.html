@@ -14,8 +14,10 @@
 ========================================================= */
 
 :root{
-    --transition-speed: 1s;
+    --transition-speed: 0.7s;
 
+    /* NEW: hold on FIRST frame */
+    --hold-0: 2000;
     --hold-1: 2000;
     --hold-2: 3000;
 
@@ -31,12 +33,12 @@
     --f2-x: 0px;
     --f2-y: 450px;
 
-    --f3-scale: 4.5;
+    --f3-scale: 5;
     --f3-x: 25px;
-    --f3-y: -1450px;
+    --f3-y: -1600px;
 
     /* =====================================================
-       📱 MOBILE CAMERA POSITIONS (FULL CONTROL)
+       📱 MOBILE CAMERA POSITIONS
     ===================================================== */
 
     --mobile-f1-scale: 2;
@@ -51,7 +53,6 @@
     --mobile-f3-x: 60px;
     --mobile-f3-y: -1600px;
 
-    /* optional global mobile boost (fine tuning only) */
     --mobile-scale-offset: 1.5;
 
     --mobile-camera-x: 0px;
@@ -94,7 +95,7 @@ html, body{
 }
 
 /* =========================================================
-   BACKGROUND BLUR (IMAGE COPY)
+   BACKGROUND BLUR
 ========================================================= */
 
 .bg-blur{
@@ -226,6 +227,7 @@ const root = getComputedStyle(document.documentElement);
 
 const transitionSpeed = parseFloat(root.getPropertyValue('--transition-speed')) * 1000;
 
+const hold0 = parseFloat(root.getPropertyValue('--hold-0')); // NEW
 const hold1 = parseFloat(root.getPropertyValue('--hold-1'));
 const hold2 = parseFloat(root.getPropertyValue('--hold-2'));
 
@@ -256,7 +258,7 @@ const enterButton = document.getElementById("enterButton");
 const stage = document.getElementById("stage");
 
 /* =========================================================
-   STAGE SCALE (CONSISTENT ACROSS DEVICES)
+   STAGE SCALE
 ========================================================= */
 
 function updateStageScale(){
@@ -290,18 +292,22 @@ if(window.visualViewport){
 updateStageScale();
 
 /* =========================================================
-   TIMELINE
+   TIMELINE (NO TRANSITION INTO FRAME 1)
 ========================================================= */
 
+/* IMPORTANT: Frame 1 is applied instantly */
 moveCamera(1);
 
-setTimeout(() => moveCamera(2), hold1);
+/* Hold frame 1 longer */
+setTimeout(() => moveCamera(2), hold0);
 
-setTimeout(() => moveCamera(3), hold1 + hold2);
+/* Frame 2 */
+setTimeout(() => moveCamera(3), hold0 + hold1);
 
+/* Enable button */
 setTimeout(() => {
     enterButton.classList.add("enabled");
-}, hold1 + hold2 + transitionSpeed);
+}, hold0 + hold1 + hold2);
 
 </script>
 
