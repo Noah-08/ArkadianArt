@@ -16,15 +16,11 @@
 :root{
     --transition-speed: 0.7s;
 
-    /* HOLD TIMES */
-    --hold-0: 1000;
-    --hold-1: 4000;
-    --hold-2: 1000;
+    --hold-0: 2000;
+    --hold-1: 2000;
+    --hold-2: 3000;
 
-    /* =====================================================
-       🖥️ DESKTOP CAMERA POSITIONS
-    ===================================================== */
-
+    /* DESKTOP */
     --f1-scale: 1;
     --f1-x: 0px;
     --f1-y: 0px;
@@ -37,32 +33,19 @@
     --f3-x: 25px;
     --f3-y: -1600px;
 
-    /* Frame 4 = return to start */
-    --f4-scale: 1;
-    --f4-x: 0px;
-    --f4-y: 0px;
-
-    /* =====================================================
-       📱 MOBILE CAMERA POSITIONS
-    ===================================================== */
-
-    --mobile-f1-scale: 1.5;
+    /* MOBILE (FULL CONTROL) */
+    --mobile-f1-scale: 1;
     --mobile-f1-x: 0px;
     --mobile-f1-y: 0px;
 
-    --mobile-f2-scale: 3;
-    --mobile-f2-x: -25px;
+    --mobile-f2-scale: 2.5;
+    --mobile-f2-x: 0px;
     --mobile-f2-y: 450px;
 
-    --mobile-f3-scale: 5.2;
-    --mobile-f3-x: 70px;
+    --mobile-f3-scale: 5;
+    --mobile-f3-x: 25px;
     --mobile-f3-y: -1600px;
 
-    --mobile-f4-scale: 4;
-    --mobile-f4-x: 0px;
-    --mobile-f4-y: 0px;
-
-    --mobile-scale-offset: 1.5;
     --mobile-camera-x: 0px;
     --mobile-camera-y: 0px;
 }
@@ -109,11 +92,9 @@ html, body{
 .bg-blur{
     position:absolute;
     inset:0;
-
     background-image:url("Images/A LANDING CONT.../Landing.png");
     background-size:cover;
     background-position:center;
-
     transform:scale(1.4);
     filter:blur(70px) brightness(0.7);
     z-index:-1;
@@ -133,10 +114,8 @@ html, body{
 .viewport{
     position:absolute;
     inset:0;
-
     transform-origin:center center;
     will-change:transform;
-
     transition:transform var(--transition-speed) ease-in-out;
 }
 
@@ -162,35 +141,22 @@ html, body{
     top:78%;
     left:50%;
     transform:translate(-50%, -50%);
-
     width:120px;
     height:120px;
-
     z-index:10;
 
     opacity:0;
     pointer-events:none;
-
     transition:opacity .5s ease;
 
-    cursor:pointer;
     background:transparent;
     border:none;
-
     -webkit-tap-highlight-color:transparent;
 }
 
 .continue-hitbox.enabled{
     opacity:1;
     pointer-events:auto;
-}
-
-/* =========================================================
-   FIX IOS
-========================================================= */
-
-*{
-    -webkit-tap-highlight-color: transparent;
 }
 
 </style>
@@ -206,16 +172,13 @@ html, body{
 
         <div class="viewport" id="camera">
 
-            <img
-                class="main-image"
-                src="Images/A LANDING CONT.../Landing.png"
-                alt="Landing Page"
-            >
+            <img class="main-image"
+                 src="Images/A LANDING CONT.../Landing.png"
+                 alt="Landing Page">
 
             <a href="ArkadianArt.html"
                class="continue-hitbox"
-               id="enterButton">
-            </a>
+               id="enterButton"></a>
 
         </div>
     </div>
@@ -246,12 +209,12 @@ function getVar(name){
 }
 
 /* =========================================================
-   CAMERA MOVE
+   CAMERA CONTROL
 ========================================================= */
 
 function moveCamera(frame){
 
-    let prefix = isMobile ? '--mobile-f' : '--f';
+    const prefix = isMobile ? '--mobile-f' : '--f';
 
     const scale = parseFloat(getVar(`${prefix}${frame}-scale`));
     const x = getVar(`${prefix}${frame}-x`);
@@ -261,7 +224,7 @@ function moveCamera(frame){
 }
 
 /* =========================================================
-   STAGE SCALE
+   STAGE SCALE (STABLE FIX — NO MOBILE BOOST)
 ========================================================= */
 
 function updateStageScale(){
@@ -269,14 +232,7 @@ function updateStageScale(){
     const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
     const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
-    let scale = vh / 1080;
-
-    const maxScale = vw / 1920;
-    scale = Math.min(scale, maxScale);
-
-    if(isMobile){
-        scale *= parseFloat(getVar('--mobile-scale-offset') || 1);
-    }
+    let scale = Math.min(vw / 1920, vh / 1080);
 
     const mx = isMobile ? getVar('--mobile-camera-x') : "0px";
     const my = isMobile ? getVar('--mobile-camera-y') : "0px";
@@ -287,35 +243,28 @@ function updateStageScale(){
 
 window.addEventListener("resize", updateStageScale);
 window.addEventListener("orientationchange", updateStageScale);
-
-if(window.visualViewport){
+if (window.visualViewport) {
     window.visualViewport.addEventListener("resize", updateStageScale);
 }
 
 updateStageScale();
 
 /* =========================================================
-   TIMELINE (F1 → F2 → F3 → F4 → UNLOCK)
+   TIMELINE (NO ANIMATION INTO FRAME 1)
 ========================================================= */
 
 camera.style.transition = "none";
 moveCamera(1);
-camera.getBoundingClientRect();
+camera.getBoundingClientRect(); // force render
 camera.style.transition = `transform ${transitionSpeed}ms ease-in-out`;
 
-/* F2 */
+/* sequence */
 setTimeout(() => moveCamera(2), hold0);
-
-/* F3 */
 setTimeout(() => moveCamera(3), hold0 + hold1);
 
-/* F4 (return to start) */
-setTimeout(() => moveCamera(4), hold0 + hold1 + hold2);
-
-/* unlock AFTER return */
 setTimeout(() => {
     enterButton.classList.add("enabled");
-}, hold0 + hold1 + hold2 + transitionSpeed);
+}, hold0 + hold1 + hold2);
 
 </script>
 
