@@ -19,6 +19,10 @@
     --hold-1: 2000;
     --hold-2: 3000;
 
+    /* =====================================================
+       🖥️ DESKTOP CAMERA POSITIONS
+    ===================================================== */
+
     --f1-scale: 1;
     --f1-x: 0px;
     --f1-y: 0px;
@@ -32,17 +36,26 @@
     --f3-y: -1450px;
 
     /* =====================================================
-       📱 MOBILE CAMERA OVERRIDES (NOW PER FRAME)
-       ===================================================== */
+       📱 MOBILE CAMERA POSITIONS (FULL CONTROL)
+    ===================================================== */
 
-    --mobile-scale-offset: 2.5;
+    --mobile-f1-scale: 1.3;
+    --mobile-f1-x: 0px;
+    --mobile-f1-y: 0px;
+
+    --mobile-f2-scale: 2.8;
+    --mobile-f2-x: 0px;
+    --mobile-f2-y: 450px;
+
+    --mobile-f3-scale: 4;
+    --mobile-f3-x: 25px;
+    --mobile-f3-y: -1450px;
+
+    /* optional global mobile boost (fine tuning only) */
+    --mobile-scale-offset: 1.5;
 
     --mobile-camera-x: 0px;
     --mobile-camera-y: 0px;
-
-    --mobile-f3-x: 15px;   /* 👈 FIX ENTER BUTTON X SHIFT */
-    --mobile-f3-y: -1450px;
-    --mobile-f3-scale: 4;
 }
 
 /* =========================================================
@@ -57,7 +70,6 @@ html, body{
     overflow:hidden;
     font-family:Arial, Helvetica, sans-serif;
     -webkit-text-size-adjust: 100%;
-
     background:black;
 }
 
@@ -82,7 +94,7 @@ html, body{
 }
 
 /* =========================================================
-   BACKGROUND BLUR
+   BACKGROUND BLUR (IMAGE COPY)
 ========================================================= */
 
 .bg-blur{
@@ -217,32 +229,34 @@ const transitionSpeed = parseFloat(root.getPropertyValue('--transition-speed')) 
 const hold1 = parseFloat(root.getPropertyValue('--hold-1'));
 const hold2 = parseFloat(root.getPropertyValue('--hold-2'));
 
-const frame1 = {
-    scale: parseFloat(root.getPropertyValue('--f1-scale')),
-    x: root.getPropertyValue('--f1-x').trim(),
-    y: root.getPropertyValue('--f1-y').trim()
-};
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-const frame2 = {
-    scale: parseFloat(root.getPropertyValue('--f2-scale')),
-    x: root.getPropertyValue('--f2-x').trim(),
-    y: root.getPropertyValue('--f2-y').trim()
-};
+function getVar(name){
+    return root.getPropertyValue(name).trim();
+}
 
-const frame3 = {
-    scale: parseFloat(root.getPropertyValue('--f3-scale')),
-    x: root.getPropertyValue('--f3-x').trim(),
-    y: root.getPropertyValue('--f3-y').trim()
-};
+function moveCamera(frame){
+
+    let prefix = isMobile ? '--mobile-f' : '--f';
+
+    let scale = parseFloat(getVar(`${prefix}${frame}-scale`));
+    let x = getVar(`${prefix}${frame}-x`);
+    let y = getVar(`${prefix}${frame}-y`);
+
+    camera.style.transform =
+        `translate(${x}, ${y}) scale(${scale})`;
+}
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
 const camera = document.getElementById("camera");
 const enterButton = document.getElementById("enterButton");
 const stage = document.getElementById("stage");
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
 /* =========================================================
-   SCALE SYSTEM
+   STAGE SCALE (CONSISTENT ACROSS DEVICES)
 ========================================================= */
 
 function updateStageScale(){
@@ -255,77 +269,39 @@ function updateStageScale(){
     const maxScale = vw / 1920;
     scale = Math.min(scale, maxScale);
 
-    if (isMobile) {
-        const mobileBoost = parseFloat(getComputedStyle(document.documentElement)
-            .getPropertyValue('--mobile-scale-offset'));
-
-        scale *= mobileBoost;
+    if(isMobile){
+        scale *= parseFloat(getVar('--mobile-scale-offset') || 1);
     }
 
-    const mobileX = isMobile
-        ? getComputedStyle(document.documentElement).getPropertyValue('--mobile-camera-x')
-        : "0px";
-
-    const mobileY = isMobile
-        ? getComputedStyle(document.documentElement).getPropertyValue('--mobile-camera-y')
-        : "0px";
+    const mx = isMobile ? getVar('--mobile-camera-x') : "0px";
+    const my = isMobile ? getVar('--mobile-camera-y') : "0px";
 
     stage.style.transform =
-        `translate(calc(-50% + ${mobileX}), calc(-50% + ${mobileY})) scale(${scale})`;
+        `translate(calc(-50% + ${mx}), calc(-50% + ${my})) scale(${scale})`;
 }
 
 window.addEventListener("resize", updateStageScale);
 window.addEventListener("orientationchange", updateStageScale);
 
-if (window.visualViewport) {
+if(window.visualViewport){
     window.visualViewport.addEventListener("resize", updateStageScale);
 }
 
 updateStageScale();
 
 /* =========================================================
-   CAMERA (NOW MOBILE OVERRIDES APPLY ONLY ON FRAME 3)
-========================================================= */
-
-function moveCamera(frame){
-
-    let x = frame.x;
-    let y = frame.y;
-    let scale = frame.scale;
-
-    if (isMobile) {
-        if (frame === frame3) {
-
-            const mobileF3X = getComputedStyle(document.documentElement)
-                .getPropertyValue('--mobile-f3-x');
-
-            const mobileF3Y = getComputedStyle(document.documentElement)
-                .getPropertyValue('--mobile-f3-y');
-
-            const mobileF3Scale = parseFloat(getComputedStyle(document.documentElement)
-                .getPropertyValue('--mobile-f3-scale'));
-
-            x = mobileF3X || x;
-            y = mobileF3Y || y;
-            scale = mobileF3Scale || scale;
-        }
-    }
-
-    camera.style.transform =
-        `translate(${x}, ${y}) scale(${scale})`;
-}
-
-/* =========================================================
    TIMELINE
 ========================================================= */
 
-moveCamera(frame1);
+moveCamera(1);
 
-setTimeout(() => moveCamera(frame2), hold1);
+setTimeout(() => moveCamera(2), hold1);
 
-setTimeout(() => moveCamera(frame3), hold1 + hold2);
+setTimeout(() => moveCamera(3), hold1 + hold2);
 
-setTimeout(() => enterButton.classList.add("enabled"), hold1 + hold2 + transitionSpeed);
+setTimeout(() => {
+    enterButton.classList.add("enabled");
+}, hold1 + hold2 + transitionSpeed);
 
 </script>
 
