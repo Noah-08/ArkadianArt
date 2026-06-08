@@ -16,10 +16,10 @@
 :root{
     --transition-speed: 0.7s;
 
-    /* NEW: hold on FIRST frame */
-    --hold-0: 2000;
-    --hold-1: 2000;
-    --hold-2: 3000;
+    /* HOLD TIMES */
+    --hold-0: 2000;  /* Frame 1 hold */
+    --hold-1: 2000;  /* Frame 2 delay */
+    --hold-2: 3000;  /* Frame 3 delay */
 
     /* =====================================================
        🖥️ DESKTOP CAMERA POSITIONS
@@ -54,7 +54,6 @@
     --mobile-f3-y: -1600px;
 
     --mobile-scale-offset: 1.5;
-
     --mobile-camera-x: 0px;
     --mobile-camera-y: 0px;
 }
@@ -166,7 +165,6 @@ html, body{
     transition:opacity .5s ease;
 
     cursor:pointer;
-
     background:transparent;
     border:none;
 
@@ -192,7 +190,6 @@ html, body{
 <body>
 
 <div class="stage-wrapper">
-
     <div class="stage" id="stage">
 
         <div class="bg-blur"></div>
@@ -212,50 +209,51 @@ html, body{
             </a>
 
         </div>
-
     </div>
-
 </div>
 
 <script>
 
 /* =========================================================
-   CAMERA POSITIONS
+   SETUP
 ========================================================= */
 
 const root = getComputedStyle(document.documentElement);
 
 const transitionSpeed = parseFloat(root.getPropertyValue('--transition-speed')) * 1000;
 
-const hold0 = parseFloat(root.getPropertyValue('--hold-0')); // NEW
+const hold0 = parseFloat(root.getPropertyValue('--hold-0'));
 const hold1 = parseFloat(root.getPropertyValue('--hold-1'));
 const hold2 = parseFloat(root.getPropertyValue('--hold-2'));
 
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+const camera = document.getElementById("camera");
+const enterButton = document.getElementById("enterButton");
+const stage = document.getElementById("stage");
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
 function getVar(name){
     return root.getPropertyValue(name).trim();
 }
+
+/* =========================================================
+   CAMERA MOVE
+========================================================= */
 
 function moveCamera(frame){
 
     let prefix = isMobile ? '--mobile-f' : '--f';
 
-    let scale = parseFloat(getVar(`${prefix}${frame}-scale`));
-    let x = getVar(`${prefix}${frame}-x`);
-    let y = getVar(`${prefix}${frame}-y`);
+    const scale = parseFloat(getVar(`${prefix}${frame}-scale`));
+    const x = getVar(`${prefix}${frame}-x`);
+    const y = getVar(`${prefix}${frame}-y`);
 
-    camera.style.transform =
-        `translate(${x}, ${y}) scale(${scale})`;
+    camera.style.transform = `translate(${x}, ${y}) scale(${scale})`;
 }
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const camera = document.getElementById("camera");
-const enterButton = document.getElementById("enterButton");
-const stage = document.getElementById("stage");
 
 /* =========================================================
    STAGE SCALE
@@ -295,16 +293,18 @@ updateStageScale();
    TIMELINE (NO TRANSITION INTO FRAME 1)
 ========================================================= */
 
-/* IMPORTANT: Frame 1 is applied instantly */
+camera.style.transition = "none";   // 🔥 prevents zoom-in on load
 moveCamera(1);
+camera.getBoundingClientRect();      // force render
+camera.style.transition = `transform ${transitionSpeed}ms ease-in-out`;
 
-/* Hold frame 1 longer */
+/* hold frame 1 */
 setTimeout(() => moveCamera(2), hold0);
 
-/* Frame 2 */
+/* frame 2 */
 setTimeout(() => moveCamera(3), hold0 + hold1);
 
-/* Enable button */
+/* enable button */
 setTimeout(() => {
     enterButton.classList.add("enabled");
 }, hold0 + hold1 + hold2);
