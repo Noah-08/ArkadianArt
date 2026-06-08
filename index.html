@@ -31,11 +31,18 @@
     --f3-x: 25px;
     --f3-y: -1450px;
 
-    /* mobile tweaks */
+    /* =====================================================
+       📱 MOBILE CAMERA OVERRIDES (NOW PER FRAME)
+       ===================================================== */
+
     --mobile-scale-offset: 1.25;
+
     --mobile-camera-x: 0px;
     --mobile-camera-y: 0px;
-    --mobile-scale-mult: 1.75;
+
+    --mobile-f3-x: 25px;   /* 👈 FIX ENTER BUTTON X SHIFT */
+    --mobile-f3-y: -1450px;
+    --mobile-f3-scale: 4.5;
 }
 
 /* =========================================================
@@ -51,7 +58,7 @@ html, body{
     font-family:Arial, Helvetica, sans-serif;
     -webkit-text-size-adjust: 100%;
 
-    background:black; /* fallback only */
+    background:black;
 }
 
 /* =========================================================
@@ -75,7 +82,7 @@ html, body{
 }
 
 /* =========================================================
-   🔥 NEW BACKGROUND LAYER (BLURRED COPY OF IMAGE)
+   BACKGROUND BLUR
 ========================================================= */
 
 .bg-blur{
@@ -86,13 +93,11 @@ html, body{
     background-size:cover;
     background-position:center;
 
-    transform:scale(1.4); /* bigger than screen so blur has no edges */
+    transform:scale(1.4);
     filter:blur(70px) brightness(0.7);
-
     z-index:-1;
 }
 
-/* subtle dark overlay for contrast (optional but helps) */
 .bg-overlay{
     position:absolute;
     inset:0;
@@ -177,7 +182,6 @@ html, body{
 
     <div class="stage" id="stage">
 
-        <!-- 🔥 blurred background copy -->
         <div class="bg-blur"></div>
         <div class="bg-overlay"></div>
 
@@ -238,7 +242,7 @@ const stage = document.getElementById("stage");
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 /* =========================================================
-   SCALE SYSTEM (UNCHANGED)
+   SCALE SYSTEM
 ========================================================= */
 
 function updateStageScale(){
@@ -255,10 +259,7 @@ function updateStageScale(){
         const mobileBoost = parseFloat(getComputedStyle(document.documentElement)
             .getPropertyValue('--mobile-scale-offset'));
 
-        const mobileMult = parseFloat(getComputedStyle(document.documentElement)
-            .getPropertyValue('--mobile-scale-mult'));
-
-        scale *= mobileBoost * mobileMult;
+        scale *= mobileBoost;
     }
 
     const mobileX = isMobile
@@ -283,12 +284,35 @@ if (window.visualViewport) {
 updateStageScale();
 
 /* =========================================================
-   CAMERA
+   CAMERA (NOW MOBILE OVERRIDES APPLY ONLY ON FRAME 3)
 ========================================================= */
 
 function moveCamera(frame){
+
+    let x = frame.x;
+    let y = frame.y;
+    let scale = frame.scale;
+
+    if (isMobile) {
+        if (frame === frame3) {
+
+            const mobileF3X = getComputedStyle(document.documentElement)
+                .getPropertyValue('--mobile-f3-x');
+
+            const mobileF3Y = getComputedStyle(document.documentElement)
+                .getPropertyValue('--mobile-f3-y');
+
+            const mobileF3Scale = parseFloat(getComputedStyle(document.documentElement)
+                .getPropertyValue('--mobile-f3-scale'));
+
+            x = mobileF3X || x;
+            y = mobileF3Y || y;
+            scale = mobileF3Scale || scale;
+        }
+    }
+
     camera.style.transform =
-        `translate(${frame.x}, ${frame.y}) scale(${frame.scale})`;
+        `translate(${x}, ${y}) scale(${scale})`;
 }
 
 /* =========================================================
@@ -298,7 +322,9 @@ function moveCamera(frame){
 moveCamera(frame1);
 
 setTimeout(() => moveCamera(frame2), hold1);
+
 setTimeout(() => moveCamera(frame3), hold1 + hold2);
+
 setTimeout(() => enterButton.classList.add("enabled"), hold1 + hold2 + transitionSpeed);
 
 </script>
