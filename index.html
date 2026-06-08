@@ -17,9 +17,9 @@
     --transition-speed: 0.7s;
 
     /* HOLD TIMES */
-    --hold-0: 2000;  /* Frame 1 hold */
-    --hold-1: 2000;  /* Frame 2 delay */
-    --hold-2: 3000;  /* Frame 3 delay */
+    --hold-0: 1000;
+    --hold-1: 4000;
+    --hold-2: 1000;
 
     /* =====================================================
        🖥️ DESKTOP CAMERA POSITIONS
@@ -37,21 +37,30 @@
     --f3-x: 25px;
     --f3-y: -1600px;
 
+    /* Frame 4 = return to start */
+    --f4-scale: 1;
+    --f4-x: 0px;
+    --f4-y: 0px;
+
     /* =====================================================
        📱 MOBILE CAMERA POSITIONS
     ===================================================== */
 
-    --mobile-f1-scale: 2;
+    --mobile-f1-scale: 4;
     --mobile-f1-x: 0px;
     --mobile-f1-y: 0px;
 
     --mobile-f2-scale: 3;
-    --mobile-f2-x: -15px;
+    --mobile-f2-x: -25px;
     --mobile-f2-y: 450px;
 
     --mobile-f3-scale: 5.2;
     --mobile-f3-x: 70px;
     --mobile-f3-y: -1600px;
+
+    --mobile-f4-scale: 4;
+    --mobile-f4-x: 0px;
+    --mobile-f4-y: 0px;
 
     --mobile-scale-offset: 1.5;
     --mobile-camera-x: 0px;
@@ -232,10 +241,6 @@ const camera = document.getElementById("camera");
 const enterButton = document.getElementById("enterButton");
 const stage = document.getElementById("stage");
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
 function getVar(name){
     return root.getPropertyValue(name).trim();
 }
@@ -290,24 +295,27 @@ if(window.visualViewport){
 updateStageScale();
 
 /* =========================================================
-   TIMELINE (NO TRANSITION INTO FRAME 1)
+   TIMELINE (F1 → F2 → F3 → F4 → UNLOCK)
 ========================================================= */
 
-camera.style.transition = "none";   // 🔥 prevents zoom-in on load
+camera.style.transition = "none";
 moveCamera(1);
-camera.getBoundingClientRect();      // force render
+camera.getBoundingClientRect();
 camera.style.transition = `transform ${transitionSpeed}ms ease-in-out`;
 
-/* hold frame 1 */
+/* F2 */
 setTimeout(() => moveCamera(2), hold0);
 
-/* frame 2 */
+/* F3 */
 setTimeout(() => moveCamera(3), hold0 + hold1);
 
-/* enable button */
+/* F4 (return to start) */
+setTimeout(() => moveCamera(4), hold0 + hold1 + hold2);
+
+/* unlock AFTER return */
 setTimeout(() => {
     enterButton.classList.add("enabled");
-}, hold0 + hold1 + hold2);
+}, hold0 + hold1 + hold2 + transitionSpeed);
 
 </script>
 
