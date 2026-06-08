@@ -14,10 +14,10 @@
 ========================================================= */
 
 :root{
-    --transition-speed: 0.5s; /* 👈 CAMERA SPEED CONTROL */
+    --transition-speed: 0.5s;
 
-    --hold-1: 2000;  /* time on frame 1 (ms) */
-    --hold-2: 3000;  /* time on frame 2 (ms) */
+    --hold-1: 2000;
+    --hold-2: 3000;
 
     --f1-scale: 1;
     --f1-x: 0px;
@@ -146,7 +146,7 @@ html, body{
 }
 
 /* =========================================================
-   FIX IOS TEXT SCALING
+   FIX IOS
 ========================================================= */
 
 *{
@@ -219,20 +219,33 @@ const enterButton = document.getElementById("enterButton");
 const stage = document.getElementById("stage");
 
 /* =========================================================
-   SCALE FIX (IPHONE + MAC CONSISTENCY)
+   FIXED SCALE (IPHONE BOOST FIX)
 ========================================================= */
 
 function updateStageScale(){
-    const scale = Math.min(
-        window.innerWidth / 1920,
-        window.innerHeight / 1080
-    );
+
+    const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+
+    let scale = Math.min(vw / 1920, vh / 1080);
+
+    /* 🔥 KEY FIX: iPhone Safari tends to render "too small" */
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+        scale *= 1.08; // subtle boost to remove “zoomed out” look
+    }
 
     stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
 
 window.addEventListener("resize", updateStageScale);
 window.addEventListener("orientationchange", updateStageScale);
+
+if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", updateStageScale);
+}
+
 updateStageScale();
 
 /* =========================================================
@@ -245,7 +258,7 @@ function moveCamera(frame){
 }
 
 /* =========================================================
-   TIMELINE (NOW USES SETTINGS)
+   TIMELINE
 ========================================================= */
 
 moveCamera(frame1);
@@ -261,8 +274,6 @@ setTimeout(() => {
 setTimeout(() => {
     enterButton.classList.add("enabled");
 }, hold1 + hold2 + transitionSpeed);
-
-/* ========================================================= */
 
 </script>
 
