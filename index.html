@@ -8,56 +8,66 @@
 <style>
 
 /* =========================================================
-   🎛️ BASE SETTINGS
+   CAMERA POSITIONS
+   EDIT THESE ONLY
 ========================================================= */
 
 :root{
-    --zoom-start: 1.4;
-    --zoom-top: 2.05;
-    --zoom-button: 1.95;
 
-    --pan-start: 0px;
-    --pan-top: 40px;     /* reduced */
-    --pan-button: -120px; /* reduced */
+    /* FRAME 1 (FULL VIEW) */
+    --f1-scale: 1;
+    --f1-x: 0px;
+    --f1-y: 0px;
 
-    --hold-start: 1.5s;
-    --to-top: 3s;
-    --to-button: 2.5s;
+    /* FRAME 2 (TOP ARTWORK) */
+    --f2-scale: 2.1;
+    --f2-x: 0px;
+    --f2-y: 350px;
 
-    --vh: 1vh;
+    /* FRAME 3 (ENTER BUTTON) */
+    --f3-scale: 4.5;
+    --f3-x: 25px;
+    --f3-y: -1000px;
+
 }
 
 /* ========================================================= */
 
-html, body{
+html,
+body{
     margin:0;
     padding:0;
-    overflow:hidden;
+    width:100%;
     height:100%;
+    overflow:hidden;
     background:black;
     font-family:Arial, Helvetica, sans-serif;
 }
 
-/* FIX iPhone viewport */
 body{
     position:relative;
-    height: calc(var(--vh) * 100);
 }
 
-/* BACKGROUND */
+/* =========================================================
+   BACKGROUND BLUR
+========================================================= */
+
 .bg-blur{
     position:fixed;
     inset:0;
-    background-image:url("Images/A LANDING CONT.../Landing.jpg");
+
+    background-image:url("Images/A LANDING CONT.../Landing.png");
     background-size:cover;
     background-position:center;
-    filter:blur(40px) brightness(1);
+
+    filter:blur(40px);
     transform:scale(1.2);
+
     z-index:-1;
 }
 
 /* =========================================================
-   STAGE (NO FLEX, NO SHIFTING)
+   STAGE
 ========================================================= */
 
 .container{
@@ -68,84 +78,68 @@ body{
 }
 
 /* =========================================================
-   CAMERA LAYER (THE ONLY THING THAT MOVES)
+   CAMERA
 ========================================================= */
 
 .viewport{
     position:absolute;
     inset:0;
-    transform-origin:center center;
 
-    animation: cameraMove calc(var(--hold-start) + var(--to-top) + var(--to-button))
-               ease-in-out forwards;
+    transform-origin:center center;
+    will-change:transform;
+
+    transition:transform 0.5s ease-in-out;
 }
 
 /* =========================================================
-   IMAGE (NO HORIZONTAL TRANSFORM ANYMORE)
+   IMAGE
 ========================================================= */
 
 .main-image{
     position:absolute;
-    top:0;
-    left:0;
+    inset:0;
+
     width:100%;
     height:100%;
+
     object-fit:contain;
+    display:block;
 }
 
 /* =========================================================
-   CONTINUE BUTTON
+   ENTER BUTTON
 ========================================================= */
 
 .continue-hitbox{
     position:absolute;
+
     top:78%;
     left:50%;
+
     transform:translate(-50%, -50%);
 
     width:clamp(60px, 6vw, 140px);
     height:clamp(60px, 6vw, 140px);
 
+    z-index:10;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:opacity .5s ease;
+
     cursor:not-allowed;
-    z-index:5;
 
     background:transparent;
     border:none;
-    opacity:0;
 
-    pointer-events:none;
-    transition:opacity 0.6s ease;
-
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color:transparent;
 }
 
 .continue-hitbox.enabled{
+    opacity:1;
     pointer-events:auto;
     cursor:pointer;
-    opacity:1;
-}
-
-/* =========================================================
-   🎬 CAMERA ANIMATION (STABILISED)
-========================================================= */
-
-@keyframes cameraMove {
-
-    0% {
-        transform: scale(var(--zoom-start)) translateY(var(--pan-start));
-    }
-
-    15% {
-        transform: scale(var(--zoom-start)) translateY(var(--pan-start));
-    }
-
-    55% {
-        transform: scale(var(--zoom-top)) translateY(var(--pan-top));
-    }
-
-    100% {
-        transform: scale(var(--zoom-button)) translateY(var(--pan-button));
-    }
 }
 
 </style>
@@ -157,11 +151,19 @@ body{
 
 <div class="container">
 
-    <div class="viewport">
+    <div class="viewport" id="camera">
 
-        <img class="main-image" src="Images/A LANDING CONT.../Landing.jpg" alt="Landing">
+        <img
+            class="main-image"
+            src="Images/A LANDING CONT.../Landing.png"
+            alt="Landing Page"
+        >
 
-        <a href="ArkadianArt.html" class="continue-hitbox"></a>
+        <a
+            href="ArkadianArt.html"
+            class="continue-hitbox"
+            id="enterButton">
+        </a>
 
     </div>
 
@@ -169,23 +171,73 @@ body{
 
 <script>
 
-/* FIX iPHONE VH BUG */
-function setVH(){
-    document.documentElement.style.setProperty(
-        '--vh',
-        `${window.innerHeight * 0.01}px`
-    );
+/* =========================================================
+   CAMERA POSITIONS
+========================================================= */
+
+const root = getComputedStyle(document.documentElement);
+
+const frame1 = {
+    scale: parseFloat(root.getPropertyValue('--f1-scale')),
+    x: root.getPropertyValue('--f1-x').trim(),
+    y: root.getPropertyValue('--f1-y').trim()
+};
+
+const frame2 = {
+    scale: parseFloat(root.getPropertyValue('--f2-scale')),
+    x: root.getPropertyValue('--f2-x').trim(),
+    y: root.getPropertyValue('--f2-y').trim()
+};
+
+const frame3 = {
+    scale: parseFloat(root.getPropertyValue('--f3-scale')),
+    x: root.getPropertyValue('--f3-x').trim(),
+    y: root.getPropertyValue('--f3-y').trim()
+};
+
+const camera = document.getElementById("camera");
+const enterButton = document.getElementById("enterButton");
+
+/* =========================================================
+   CAMERA MOVE FUNCTION
+========================================================= */
+
+function moveCamera(frame){
+
+    camera.style.transform =
+        `translate(${frame.x}, ${frame.y}) scale(${frame.scale})`;
+
 }
-setVH();
-window.addEventListener('resize', setVH);
 
-/* UNLOCK BUTTON AFTER ANIMATION */
-const viewport = document.querySelector(".viewport");
-const button = document.querySelector(".continue-hitbox");
+/* =========================================================
+   CLIENT TIMELINE
+========================================================= */
 
-viewport.addEventListener("animationend", () => {
-    button.classList.add("enabled");
-});
+/* Start on Frame 1 */
+moveCamera(frame1);
+
+/* Hold Frame 1 for 1 second */
+setTimeout(() => {
+
+    /* Zoom to Frame 2 (0.5s transition) */
+    moveCamera(frame2);
+
+}, 1000);
+
+/* Hold Frame 2 for 4 seconds */
+setTimeout(() => {
+
+    /* Zoom to Frame 3 (0.5s transition) */
+    moveCamera(frame3);
+
+}, 5500);
+
+/* Stay on Frame 3 forever and enable Enter */
+setTimeout(() => {
+
+    enterButton.classList.add("enabled");
+
+}, 6000);
 
 </script>
 
