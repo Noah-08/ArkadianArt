@@ -10,7 +10,7 @@
 <style>
 
 /* =========================================================
-   GLOBAL SETTINGS (EDIT THESE)
+   GLOBAL SETTINGS
 ========================================================= */
 
 :root{
@@ -33,7 +33,7 @@
 }
 
 /* =========================================================
-   GLOBAL RESET
+   RESET
 ========================================================= */
 
 html, body{
@@ -48,7 +48,7 @@ html, body{
 }
 
 /* =========================================================
-   FIXED DESIGN SPACE SYSTEM
+   STAGE
 ========================================================= */
 
 .stage{
@@ -69,7 +69,7 @@ html, body{
 }
 
 /* =========================================================
-   BACKGROUND BLUR
+   BACKGROUND
 ========================================================= */
 
 .bg-blur{
@@ -113,7 +113,7 @@ html, body{
 }
 
 /* =========================================================
-   ENTER BUTTON
+   BUTTON
 ========================================================= */
 
 .continue-hitbox{
@@ -219,7 +219,7 @@ const enterButton = document.getElementById("enterButton");
 const stage = document.getElementById("stage");
 
 /* =========================================================
-   FIXED SCALE (IPHONE BOOST FIX)
+   🔥 FIXED SCALE (REAL CONSISTENT ACROSS MAC + iPHONE)
 ========================================================= */
 
 function updateStageScale(){
@@ -227,14 +227,12 @@ function updateStageScale(){
     const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
     const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
-    let scale = Math.min(vw / 1920, vh / 1080);
+    /* KEY FIX: anchor to HEIGHT, not width */
+    let scale = vh / 1080;
 
-    /* 🔥 KEY FIX: iPhone Safari tends to render "too small" */
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (isMobile) {
-        scale *= 1.08; // subtle boost to remove “zoomed out” look
-    }
+    /* small safety clamp for ultra-wide screens */
+    const maxScale = vw / 1920;
+    scale = Math.min(scale, maxScale);
 
     stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
