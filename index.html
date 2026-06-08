@@ -30,6 +30,15 @@
     --f3-scale: 4.5;
     --f3-x: 25px;
     --f3-y: -1450px;
+
+    /* =====================================================
+       📱 iPHONE / MOBILE OVERRIDES (EDIT THESE)
+       ===================================================== */
+
+    --mobile-scale-offset: 1.15;      /* FIXES ZOOM OUT */
+    --mobile-camera-x: 0px;           /* shift whole world */
+    --mobile-camera-y: 0px;
+    --mobile-scale-mult: 2;         /* extra tweak if needed */
 }
 
 /* =========================================================
@@ -219,7 +228,13 @@ const enterButton = document.getElementById("enterButton");
 const stage = document.getElementById("stage");
 
 /* =========================================================
-   🔥 FIXED SCALE (REAL CONSISTENT ACROSS MAC + iPHONE)
+   DEVICE DETECTION
+========================================================= */
+
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+/* =========================================================
+   SCALE SYSTEM (NOW WITH MANUAL CONTROL)
 ========================================================= */
 
 function updateStageScale(){
@@ -227,14 +242,31 @@ function updateStageScale(){
     const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
     const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
-    /* KEY FIX: anchor to HEIGHT, not width */
     let scale = vh / 1080;
 
-    /* small safety clamp for ultra-wide screens */
     const maxScale = vw / 1920;
     scale = Math.min(scale, maxScale);
 
-    stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    if (isMobile) {
+        const mobileBoost = parseFloat(getComputedStyle(document.documentElement)
+            .getPropertyValue('--mobile-scale-offset'));
+
+        const mobileMult = parseFloat(getComputedStyle(document.documentElement)
+            .getPropertyValue('--mobile-scale-mult'));
+
+        scale *= mobileBoost * mobileMult;
+    }
+
+    const mobileX = isMobile
+        ? getComputedStyle(document.documentElement).getPropertyValue('--mobile-camera-x')
+        : "0px";
+
+    const mobileY = isMobile
+        ? getComputedStyle(document.documentElement).getPropertyValue('--mobile-camera-y')
+        : "0px";
+
+    stage.style.transform =
+        `translate(calc(-50% + ${mobileX}), calc(-50% + ${mobileY})) scale(${scale})`;
 }
 
 window.addEventListener("resize", updateStageScale);
@@ -261,17 +293,9 @@ function moveCamera(frame){
 
 moveCamera(frame1);
 
-setTimeout(() => {
-    moveCamera(frame2);
-}, hold1);
-
-setTimeout(() => {
-    moveCamera(frame3);
-}, hold1 + hold2);
-
-setTimeout(() => {
-    enterButton.classList.add("enabled");
-}, hold1 + hold2 + transitionSpeed);
+setTimeout(() => moveCamera(frame2), hold1);
+setTimeout(() => moveCamera(frame3), hold1 + hold2);
+setTimeout(() => enterButton.classList.add("enabled"), hold1 + hold2 + transitionSpeed);
 
 </script>
 
