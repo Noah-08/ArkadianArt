@@ -23,22 +23,19 @@
     --f1-x: 0px;
     --f1-y: 0px;
 
-    --f2-scale: 2;
+    --f2-scale: 2.5;
     --f2-x: 0px;
-    --f2-y: 400px;
+    --f2-y: 450px;
 
     --f3-scale: 4.5;
     --f3-x: 25px;
     --f3-y: -1450px;
 
-    /* =====================================================
-       📱 iPHONE / MOBILE OVERRIDES (EDIT THESE)
-       ===================================================== */
-
-    --mobile-scale-offset: 2;      /* FIXES ZOOM OUT */
-    --mobile-camera-x: 25px;           /* shift whole world */
+    /* mobile tweaks */
+    --mobile-scale-offset: 2;
+    --mobile-camera-x: 25px;
     --mobile-camera-y: 0px;
-    --mobile-scale-mult: 3;         /* extra tweak if needed */
+    --mobile-scale-mult: 3;
 }
 
 /* =========================================================
@@ -51,9 +48,10 @@ html, body{
     width:100%;
     height:100%;
     overflow:hidden;
-    background:black;
     font-family:Arial, Helvetica, sans-serif;
     -webkit-text-size-adjust: 100%;
+
+    background:black; /* fallback only */
 }
 
 /* =========================================================
@@ -74,11 +72,10 @@ html, body{
     position:fixed;
     inset:0;
     overflow:hidden;
-    background:black;
 }
 
 /* =========================================================
-   BACKGROUND
+   🔥 NEW BACKGROUND LAYER (BLURRED COPY OF IMAGE)
 ========================================================= */
 
 .bg-blur{
@@ -89,8 +86,17 @@ html, body{
     background-size:cover;
     background-position:center;
 
-    filter:blur(40px);
-    transform:scale(1.2);
+    transform:scale(1.4); /* bigger than screen so blur has no edges */
+    filter:blur(70px) brightness(0.7);
+
+    z-index:-1;
+}
+
+/* subtle dark overlay for contrast (optional but helps) */
+.bg-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.25);
     z-index:-1;
 }
 
@@ -171,7 +177,9 @@ html, body{
 
     <div class="stage" id="stage">
 
+        <!-- 🔥 blurred background copy -->
         <div class="bg-blur"></div>
+        <div class="bg-overlay"></div>
 
         <div class="viewport" id="camera">
 
@@ -227,14 +235,10 @@ const camera = document.getElementById("camera");
 const enterButton = document.getElementById("enterButton");
 const stage = document.getElementById("stage");
 
-/* =========================================================
-   DEVICE DETECTION
-========================================================= */
-
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 /* =========================================================
-   SCALE SYSTEM (NOW WITH MANUAL CONTROL)
+   SCALE SYSTEM (UNCHANGED)
 ========================================================= */
 
 function updateStageScale(){
