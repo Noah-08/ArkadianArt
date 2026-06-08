@@ -2,39 +2,41 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+
 <title>Arkadian Art</title>
 
 <style>
 
 /* =========================================================
-   CAMERA POSITIONS
-   EDIT THESE ONLY
+   GLOBAL SETTINGS (EDIT THESE)
 ========================================================= */
 
 :root{
+    --transition-speed: 0.5s; /* 👈 CAMERA SPEED CONTROL */
 
-    /* FRAME 1 (FULL VIEW) */
+    --hold-1: 2000;  /* time on frame 1 (ms) */
+    --hold-2: 3000;  /* time on frame 2 (ms) */
+
     --f1-scale: 1;
     --f1-x: 0px;
     --f1-y: 0px;
 
-    /* FRAME 2 (TOP ARTWORK) */
-    --f2-scale: 2.1;
+    --f2-scale: 2;
     --f2-x: 0px;
-    --f2-y: 350px;
+    --f2-y: 400px;
 
-    /* FRAME 3 (ENTER BUTTON) */
     --f3-scale: 4.5;
     --f3-x: 25px;
-    --f3-y: -1000px;
-
+    --f3-y: -1450px;
 }
 
-/* ========================================================= */
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
 
-html,
-body{
+html, body{
     margin:0;
     padding:0;
     width:100%;
@@ -42,10 +44,28 @@ body{
     overflow:hidden;
     background:black;
     font-family:Arial, Helvetica, sans-serif;
+    -webkit-text-size-adjust: 100%;
 }
 
-body{
-    position:relative;
+/* =========================================================
+   FIXED DESIGN SPACE SYSTEM
+========================================================= */
+
+.stage{
+    position:fixed;
+    top:50%;
+    left:50%;
+    width:1920px;
+    height:1080px;
+    transform-origin:center center;
+    will-change:transform;
+}
+
+.stage-wrapper{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    background:black;
 }
 
 /* =========================================================
@@ -53,7 +73,7 @@ body{
 ========================================================= */
 
 .bg-blur{
-    position:fixed;
+    position:absolute;
     inset:0;
 
     background-image:url("Images/A LANDING CONT.../Landing.png");
@@ -62,19 +82,7 @@ body{
 
     filter:blur(40px);
     transform:scale(1.2);
-
     z-index:-1;
-}
-
-/* =========================================================
-   STAGE
-========================================================= */
-
-.container{
-    position:relative;
-    width:100%;
-    height:100%;
-    overflow:hidden;
 }
 
 /* =========================================================
@@ -88,7 +96,7 @@ body{
     transform-origin:center center;
     will-change:transform;
 
-    transition:transform 0.5s ease-in-out;
+    transition:transform var(--transition-speed) ease-in-out;
 }
 
 /* =========================================================
@@ -98,10 +106,8 @@ body{
 .main-image{
     position:absolute;
     inset:0;
-
     width:100%;
     height:100%;
-
     object-fit:contain;
     display:block;
 }
@@ -112,14 +118,12 @@ body{
 
 .continue-hitbox{
     position:absolute;
-
     top:78%;
     left:50%;
-
     transform:translate(-50%, -50%);
 
-    width:clamp(60px, 6vw, 140px);
-    height:clamp(60px, 6vw, 140px);
+    width:120px;
+    height:120px;
 
     z-index:10;
 
@@ -128,7 +132,7 @@ body{
 
     transition:opacity .5s ease;
 
-    cursor:not-allowed;
+    cursor:pointer;
 
     background:transparent;
     border:none;
@@ -139,7 +143,14 @@ body{
 .continue-hitbox.enabled{
     opacity:1;
     pointer-events:auto;
-    cursor:pointer;
+}
+
+/* =========================================================
+   FIX IOS TEXT SCALING
+========================================================= */
+
+*{
+    -webkit-tap-highlight-color: transparent;
 }
 
 </style>
@@ -147,23 +158,26 @@ body{
 
 <body>
 
-<div class="bg-blur"></div>
+<div class="stage-wrapper">
 
-<div class="container">
+    <div class="stage" id="stage">
 
-    <div class="viewport" id="camera">
+        <div class="bg-blur"></div>
 
-        <img
-            class="main-image"
-            src="Images/A LANDING CONT.../Landing.png"
-            alt="Landing Page"
-        >
+        <div class="viewport" id="camera">
 
-        <a
-            href="ArkadianArt.html"
-            class="continue-hitbox"
-            id="enterButton">
-        </a>
+            <img
+                class="main-image"
+                src="Images/A LANDING CONT.../Landing.png"
+                alt="Landing Page"
+            >
+
+            <a href="ArkadianArt.html"
+               class="continue-hitbox"
+               id="enterButton">
+            </a>
+
+        </div>
 
     </div>
 
@@ -176,6 +190,11 @@ body{
 ========================================================= */
 
 const root = getComputedStyle(document.documentElement);
+
+const transitionSpeed = parseFloat(root.getPropertyValue('--transition-speed')) * 1000;
+
+const hold1 = parseFloat(root.getPropertyValue('--hold-1'));
+const hold2 = parseFloat(root.getPropertyValue('--hold-2'));
 
 const frame1 = {
     scale: parseFloat(root.getPropertyValue('--f1-scale')),
@@ -197,47 +216,53 @@ const frame3 = {
 
 const camera = document.getElementById("camera");
 const enterButton = document.getElementById("enterButton");
+const stage = document.getElementById("stage");
 
 /* =========================================================
-   CAMERA MOVE FUNCTION
+   SCALE FIX (IPHONE + MAC CONSISTENCY)
+========================================================= */
+
+function updateStageScale(){
+    const scale = Math.min(
+        window.innerWidth / 1920,
+        window.innerHeight / 1080
+    );
+
+    stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+}
+
+window.addEventListener("resize", updateStageScale);
+window.addEventListener("orientationchange", updateStageScale);
+updateStageScale();
+
+/* =========================================================
+   CAMERA
 ========================================================= */
 
 function moveCamera(frame){
-
     camera.style.transform =
         `translate(${frame.x}, ${frame.y}) scale(${frame.scale})`;
-
 }
 
 /* =========================================================
-   CLIENT TIMELINE
+   TIMELINE (NOW USES SETTINGS)
 ========================================================= */
 
-/* Start on Frame 1 */
 moveCamera(frame1);
 
-/* Hold Frame 1 for 1 second */
 setTimeout(() => {
-
-    /* Zoom to Frame 2 (0.5s transition) */
     moveCamera(frame2);
+}, hold1);
 
-}, 1000);
-
-/* Hold Frame 2 for 4 seconds */
 setTimeout(() => {
-
-    /* Zoom to Frame 3 (0.5s transition) */
     moveCamera(frame3);
+}, hold1 + hold2);
 
-}, 5500);
-
-/* Stay on Frame 3 forever and enable Enter */
 setTimeout(() => {
-
     enterButton.classList.add("enabled");
+}, hold1 + hold2 + transitionSpeed);
 
-}, 6000);
+/* ========================================================= */
 
 </script>
 
